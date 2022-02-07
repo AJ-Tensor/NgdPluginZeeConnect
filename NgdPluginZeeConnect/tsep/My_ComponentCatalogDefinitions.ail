@@ -1,0 +1,284 @@
+string_utf8 albl_NciGroup
+{
+    entry = ("enu", "NCI Group");
+    entry = ("chs", "NCI Group***");
+    entry = ("cht", "NCI Group***");
+    entry = ("csy", "NCI Group***");
+    entry = ("deu", "NCI Group***");
+    entry = ("esp", "NCI Group***");
+    entry = ("fra", "NCI Group***");
+    entry = ("hun", "NCI Group***");
+    entry = ("ita", "NCI Group***");
+    entry = ("jpn", "NCI Group***");
+    entry = ("nld", "NCI Group***");
+    entry = ("plk", "NCI Group***");
+    entry = ("ptb", "NCI Group***");
+    entry = ("ptg", "NCI Group***");
+    entry = ("rus", "NCI Group***");
+};
+
+string_utf8 albl_NciGroupDescription
+{
+    entry = ("enu", "NCI applications and components.");
+    entry = ("chs", "NCI applications and components***");
+    entry = ("cht", "NCI applications and components***");
+    entry = ("csy", "NCI applications and components***");
+    entry = ("deu", "NCI applications and components***");
+    entry = ("esp", "NCI applications and components***");
+    entry = ("fra", "NCI applications and components***");
+    entry = ("hun", "NCI applications and components***");
+    entry = ("ita", "NCI applications and components***");
+    entry = ("jpn", "NCI applications and components***");
+    entry = ("nld", "NCI applications and components***");
+    entry = ("plk", "NCI applications and components***");
+    entry = ("ptb", "NCI applications and components***");
+    entry = ("ptg", "NCI applications and components***");
+    entry = ("rus", "NCI applications and components***");
+};
+
+string_utf8 albl_NciBracingGroup
+{
+    entry = ("enu", "Bracing");
+    entry = ("chs", "Bracing***");
+    entry = ("cht", "Bracing***");
+    entry = ("csy", "Bracing***");
+    entry = ("deu", "Bracing***");
+    entry = ("esp", "Bracing***");
+    entry = ("fra", "Bracing***");
+    entry = ("hun", "Bracing***");
+    entry = ("ita", "Bracing***");
+    entry = ("jpn", "Bracing***");
+    entry = ("nld", "Bracing***");
+    entry = ("plk", "Bracing***");
+    entry = ("ptb", "Bracing***");
+    entry = ("ptg", "Bracing***");
+    entry = ("rus", "Bracing***");
+};
+
+string_utf8 albl_NciStructuralGroup
+{
+    entry = ("enu", "Structural");
+    entry = ("chs", "Structural***");
+    entry = ("cht", "Structural***");
+    entry = ("csy", "Structural***");
+    entry = ("deu", "Structural***");
+    entry = ("esp", "Structural***");
+    entry = ("fra", "Structural***");
+    entry = ("hun", "Structural***");
+    entry = ("ita", "Structural***");
+    entry = ("jpn", "Structural***");
+    entry = ("nld", "Structural***");
+    entry = ("plk", "Structural***");
+    entry = ("ptb", "Structural***");
+    entry = ("ptg", "Structural***");
+    entry = ("rus", "Structural***");
+};
+
+string_utf8 albl_NciStructuralGroupDescription
+{
+    entry = ("enu", "These connections work with built-up and hot-rolled assemblies.");
+    entry = ("chs", "These connections work with built-up and hot-rolled assemblies***");
+    entry = ("cht", "These connections work with built-up and hot-rolled assemblies***");
+    entry = ("csy", "These connections work with built-up and hot-rolled assemblies***");
+    entry = ("deu", "These connections work with built-up and hot-rolled assemblies***");
+    entry = ("esp", "These connections work with built-up and hot-rolled assemblies***");
+    entry = ("fra", "These connections work with built-up and hot-rolled assemblies***");
+    entry = ("hun", "These connections work with built-up and hot-rolled assemblies***");
+    entry = ("ita", "These connections work with built-up and hot-rolled assemblies***");
+    entry = ("jpn", "These connections work with built-up and hot-rolled assemblies***");
+    entry = ("nld", "These connections work with built-up and hot-rolled assemblies***");
+    entry = ("plk", "These connections work with built-up and hot-rolled assemblies***");
+    entry = ("ptb", "These connections work with built-up and hot-rolled assemblies***");
+    entry = ("ptg", "These connections work with built-up and hot-rolled assemblies***");
+    entry = ("rus", "These connections work with built-up and hot-rolled assemblies***");
+};
+
+string_utf8 albl_NciSecondaryGroup
+{
+    entry = ("enu", "Secondary");
+    entry = ("chs", "Secondary***");
+    entry = ("cht", "Secondary***");
+    entry = ("csy", "Secondary***");
+    entry = ("deu", "Secondary***");
+    entry = ("esp", "Secondary***");
+    entry = ("fra", "Secondary***");
+    entry = ("hun", "Secondary***");
+    entry = ("ita", "Secondary***");
+    entry = ("jpn", "Secondary***");
+    entry = ("nld", "Secondary***");
+    entry = ("plk", "Secondary***");
+    entry = ("ptb", "Secondary***");
+    entry = ("ptg", "Secondary***");
+    entry = ("rus", "Secondary***");
+};
+
+string_utf8 albl_NciSecondaryGroupDescription
+{
+    entry = ("enu", "Nci Standard Secondary Framing Connections.");
+    entry = ("chs", "Nci Standard Secondary Framing Connections***");
+    entry = ("cht", "Nci Standard Secondary Framing Connections***");
+    entry = ("csy", "Nci Standard Secondary Framing Connections***");
+    entry = ("deu", "Nci Standard Secondary Framing Connections***");
+    entry = ("esp", "Nci Standard Secondary Framing Connections***");
+    entry = ("fra", "Nci Standard Secondary Framing Connections***");
+    entry = ("hun", "Nci Standard Secondary Framing Connections***");
+    entry = ("ita", "Nci Standard Secondary Framing Connections***");
+    entry = ("jpn", "Nci Standard Secondary Framing Connections***");
+    entry = ("nld", "Nci Standard Secondary Framing Connections***");
+    entry = ("plk", "Nci Standard Secondary Framing Connections***");
+    entry = ("ptb", "Nci Standard Secondary Framing Connections***");
+    entry = ("ptg", "Nci Standard Secondary Framing Connections***");
+    entry = ("rus", "Nci Standard Secondary Framing Connections***");
+};
+
+string_utf8 albl_NciImportExportGroup
+{
+    entry = ("enu", "Import and Export");
+    entry = ("chs", "Import and Export***");
+    entry = ("cht", "Import and Export***");
+    entry = ("csy", "Import and Export***");
+    entry = ("deu", "Import and Export***");
+    entry = ("esp", "Import and Export***");
+    entry = ("fra", "Import and Export***");
+    entry = ("hun", "Import and Export***");
+    entry = ("ita", "Import and Export***");
+    entry = ("jpn", "Import and Export***");
+    entry = ("nld", "Import and Export***");
+    entry = ("plk", "Import and Export***");
+    entry = ("ptb", "Import and Export***");
+    entry = ("ptg", "Import and Export***");
+    entry = ("rus", "Import and Export***");
+};
+
+string_utf8 albl_NciImportExportGroupDescription
+{
+    entry = ("enu", "NCI Import and Export Applications and Components");
+    entry = ("chs", "NCI Import and Export Applications and Components***");
+    entry = ("cht", "NCI Import and Export Applications and Components***");
+    entry = ("csy", "NCI Import and Export Applications and Components***");
+    entry = ("deu", "NCI Import and Export Applications and Components***");
+    entry = ("esp", "NCI Import and Export Applications and Components***");
+    entry = ("fra", "NCI Import and Export Applications and Components***");
+    entry = ("hun", "NCI Import and Export Applications and Components***");
+    entry = ("ita", "NCI Import and Export Applications and Components***");
+    entry = ("jpn", "NCI Import and Export Applications and Components***");
+    entry = ("nld", "NCI Import and Export Applications and Components***");
+    entry = ("plk", "NCI Import and Export Applications and Components***");
+    entry = ("ptb", "NCI Import and Export Applications and Components***");
+    entry = ("ptg", "NCI Import and Export Applications and Components***");
+    entry = ("rus", "NCI Import and Export Applications and Components***");
+};
+
+string_utf8 albl_NciMiscGroup
+{
+    entry = ("enu", "Misc.");
+    entry = ("chs", "Misc***");
+    entry = ("cht", "Misc***");
+    entry = ("csy", "Misc***");
+    entry = ("deu", "Misc***");
+    entry = ("esp", "Misc***");
+    entry = ("fra", "Misc***");
+    entry = ("hun", "Misc***");
+    entry = ("ita", "Misc***");
+    entry = ("jpn", "Misc***");
+    entry = ("nld", "Misc***");
+    entry = ("plk", "Misc***");
+    entry = ("ptb", "Misc***");
+    entry = ("ptg", "Misc***");
+    entry = ("rus", "Misc***");
+};
+
+string_utf8 albl_NciMiscGroupDescription
+{
+    entry = ("enu", "NCI Miscellaneous components and applications.");
+    entry = ("chs", "NCI Miscellaneous components and applications***");
+    entry = ("cht", "NCI Miscellaneous components and applications***");
+    entry = ("csy", "NCI Miscellaneous components and applications***");
+    entry = ("deu", "NCI Miscellaneous components and applications***");
+    entry = ("esp", "NCI Miscellaneous components and applications***");
+    entry = ("fra", "NCI Miscellaneous components and applications***");
+    entry = ("hun", "NCI Miscellaneous components and applications***");
+    entry = ("ita", "NCI Miscellaneous components and applications***");
+    entry = ("jpn", "NCI Miscellaneous components and applications***");
+    entry = ("nld", "NCI Miscellaneous components and applications***");
+    entry = ("plk", "NCI Miscellaneous components and applications***");
+    entry = ("ptb", "NCI Miscellaneous components and applications***");
+    entry = ("ptg", "NCI Miscellaneous components and applications***");
+    entry = ("rus", "NCI Miscellaneous components and applications***");
+};
+
+string_utf8 albl_NciCustomComponentGroup
+{
+    entry = ("enu", "Custom Components");
+    entry = ("chs", "Custom Components***");
+    entry = ("cht", "Custom Components***");
+    entry = ("csy", "Custom Components***");
+    entry = ("deu", "Custom Components***");
+    entry = ("esp", "Custom Components***");
+    entry = ("fra", "Custom Components***");
+    entry = ("hun", "Custom Components***");
+    entry = ("ita", "Custom Components***");
+    entry = ("jpn", "Custom Components***");
+    entry = ("nld", "Custom Components***");
+    entry = ("plk", "Custom Components***");
+    entry = ("ptb", "Custom Components***");
+    entry = ("ptg", "Custom Components***");
+    entry = ("rus", "Custom Components***");
+};
+
+string_utf8 albl_NciCustomComponentGroupDescription
+{
+    entry = ("enu", "NCI's Custom Components.");
+    entry = ("chs", "NCI's Custom Components***");
+    entry = ("cht", "NCI's Custom Components***");
+    entry = ("csy", "NCI's Custom Components***");
+    entry = ("deu", "NCI's Custom Components***");
+    entry = ("esp", "NCI's Custom Components***");
+    entry = ("fra", "NCI's Custom Components***");
+    entry = ("hun", "NCI's Custom Components***");
+    entry = ("ita", "NCI's Custom Components***");
+    entry = ("jpn", "NCI's Custom Components***");
+    entry = ("nld", "NCI's Custom Components***");
+    entry = ("plk", "NCI's Custom Components***");
+    entry = ("ptb", "NCI's Custom Components***");
+    entry = ("ptg", "NCI's Custom Components***");
+    entry = ("rus", "NCI's Custom Components***");
+};
+
+string_utf8 albl_NgdPluginZeeConnect
+{
+    entry = ("enu", "NgdPluginZeeConnect");
+    entry = ("chs", "NgdPluginZeeConnect***");
+    entry = ("cht", "NgdPluginZeeConnect***");
+    entry = ("csy", "NgdPluginZeeConnect***");
+    entry = ("deu", "NgdPluginZeeConnect***");
+    entry = ("esp", "NgdPluginZeeConnect***");
+    entry = ("fra", "NgdPluginZeeConnect***");
+    entry = ("hun", "NgdPluginZeeConnect***");
+    entry = ("ita", "NgdPluginZeeConnect***");
+    entry = ("jpn", "NgdPluginZeeConnect***");
+    entry = ("nld", "NgdPluginZeeConnect***");
+    entry = ("plk", "NgdPluginZeeConnect***");
+    entry = ("ptb", "NgdPluginZeeConnect***");
+    entry = ("ptg", "NgdPluginZeeConnect***");
+    entry = ("rus", "NgdPluginZeeConnect***");
+};
+
+string_utf8 albl_NgdPluginZeeConnectDescription
+{
+    entry = ("enu", "NgdPluginZeeConnect Description");
+    entry = ("chs", "NgdPluginZeeConnect Description***");
+    entry = ("cht", "NgdPluginZeeConnect Description***");
+    entry = ("csy", "NgdPluginZeeConnect Description***");
+    entry = ("deu", "NgdPluginZeeConnect Description***");
+    entry = ("esp", "NgdPluginZeeConnect Description***");
+    entry = ("fra", "NgdPluginZeeConnect Description***");
+    entry = ("hun", "NgdPluginZeeConnect Description***");
+    entry = ("ita", "NgdPluginZeeConnect Description***");
+    entry = ("jpn", "NgdPluginZeeConnect Description***");
+    entry = ("nld", "NgdPluginZeeConnect Description***");
+    entry = ("plk", "NgdPluginZeeConnect Description***");
+    entry = ("ptb", "NgdPluginZeeConnect Description***");
+    entry = ("ptg", "NgdPluginZeeConnect Description***");
+    entry = ("rus", "NgdPluginZeeConnect Description***");
+};

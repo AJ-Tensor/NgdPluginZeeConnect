@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TEP Version="2.0">
+  <Product Type="Extension" Id="NgdPluginZeeConnect" UpgradeCode="{2f22cbdb-ca4a-48de-b976-f8b216329942}" Version="2020.1.0" Language="1033" Name="NgdPluginZeeConnect" Manufacturer="Nci Group" Description="This extension adds a NgdPluginZeeConnect." IconPath="%TEPDEFINITIONFILEFOLDER%\TEPIcon.png">
+    <TeklaVersions>
+      <TeklaVersion Name="2099.1" />
+      <MinTeklaVersion Name="2021.0" />
+      <MaxTeklaVersion Name="2099.1" />
+    </TeklaVersions>
+  </Product>
+  <SourcePathVariables>
+    <SourcePathVariable Id="TepOutputFolder" Value="%TEPDEFINITIONFILEFOLDER%\..\output" Comment="This provides the location where the package builder is to save the package." />
+    <SourcePathVariable Id="SourceBitmapFolder" Value="%TEPDEFINITIONFILEFOLDER%\bitmaps" />
+    <SourcePathVariable Id="BinariesFolder" Value="%TEPDEFINITIONFILEFOLDER%\..\bin\debug" />
+  </SourcePathVariables>
+  <TargetPathVariables>
+    <PathVariable Id="ModelPluginsDirectory" Value="%ENVDIR%\extensions\plugins\tekla\model\" />
+    <PathVariable Id="ModelApplicationsDirectory" Value="%ENVDIR%\extensions\applications\tekla\model\" />
+    <PathVariable Id="ExtensionsDir" Value="%commonEnvFolder%\extensions\" />
+    <PathVariable Id="BinariesTargetDirectory" Value="%ExtensionsDir%\NgdPluginZeeConnect\" />
+    <PathVariable Id="BitmapsDirectory" Value="%ENVDIR%\..\bitmaps\" />
+    <PathVariable Id="AttributeFileDirectory" Value="%commonEnvFolder%\system\" />
+    <PathVariable Id="CommonMacroDirectory" Value="%commonEnvFolder%\macros\modeling\" />
+  </TargetPathVariables>
+  <Component Id="TheExtensionComponent" Guid="{4a43c69b-89c5-4464-b614-d0202782a7c8}">
+    <File Id="Bitmaps" Source="%SourceBitmapFolder%\*" Target="%BitmapsDirectory%" />
+    <File Id="NgdPluginZeeConnect.dll" Source="%BinariesFolder%\NgdPluginZeeConnect.dll" Target="%BinariesTargetDirectory%" />
+    <File Id="Nci.Helper.dll" Source="%BinariesFolder%\Nci.Helper.dll" Target="%BinariesTargetDirectory%" />
+    <File Id="Ngd.Tekla.Geometry3d" Source="%BinariesFolder%\Ngd.Tekla.Geometry3d.dll" Target="%BinariesTargetDirectory%" />
+    <File Id="Nci.Tekla.Model.dll" Source="%BinariesFolder%\Nci.Tekla.Model.dll" Target="%BinariesTargetDirectory%" />
+    <File Id="Ngd.Dialog.dll" Source="%BinariesFolder%\Ngd.Dialog.dll" Target="%BinariesTargetDirectory%" />
+    <File Id="ComponentCatalogFile" Source="%TEPDEFINITIONFILEFOLDER%\My_ComponentCatalog.ac.xml" Target="%BinariesTargetDirectory%" />
+    <File Id="ComponentCatalogTranslations" Source="%TEPDEFINITIONFILEFOLDER%\My_ComponentCatalogDefinitions.ail" Target="%BinariesTargetDirectory%" />
+  </Component>
+  <Feature Id="TheExtensionFeature" Title="ExtensionFeature">
+    <ComponentRef ReferenceId="TheExtensionComponent" />
+  </Feature>
+</TEP>

@@ -1,0 +1,17 @@
+﻿Build started...
+1>------ Build started: Project: NgdPluginZeeConnect, Configuration: Debug Any CPU ------
+1>  NgdPluginZeeConnect -> C:\Users\TENSOR\source\repos\NgdPluginZeeConnect\NgdPluginZeeConnect\bin\Debug\NgdPluginZeeConnect.dll
+1>  C:\Users\TENSOR\source\repos\NgdPluginZeeConnect\NgdPluginZeeConnect\bin\Debug\Fusion.dll
+1>  C:\Users\TENSOR\source\repos\NgdPluginZeeConnect\NgdPluginZeeConnect\bin\Debug\Fusion.xml
+1>  C:\Users\TENSOR\source\repos\NgdPluginZeeConnect\NgdPluginZeeConnect\bin\Debug\Nci.Helper.dll
+1>  C:\Users\TENSOR\source\repos\NgdPluginZeeConnect\NgdPluginZeeConnect\bin\Debug\Nci.Helper.xml
+1>  C:\Users\TENSOR\source\repos\NgdPluginZeeConnect\NgdPluginZeeConnect\bin\Debug\Nci.Tekla.Model.dll
+1>  C:\Users\TENSOR\source\repos\NgdPluginZeeConnect\NgdPluginZeeConnect\bin\Debug\Nci.Tekla.Model.xml
+1>  C:\Users\TENSOR\source\repos\NgdPluginZeeConnect\NgdPluginZeeConnect\bin\Debug\Ngd.Dialog.dll
+1>  C:\Users\TENSOR\source\repos\NgdPluginZeeConnect\NgdPluginZeeConnect\bin\Debug\Ngd.Dialog.xml
+1>  C:\Users\TENSOR\source\repos\NgdPluginZeeConnect\NgdPluginZeeConnect\bin\Debug\Ngd.Tekla.Geometry3d.dll
+1>  C:\Users\TENSOR\source\repos\NgdPluginZeeConnect\NgdPluginZeeConnect\bin\Debug\Ngd.Tekla.Geometry3d.xml
+1>  C:\Users\TENSOR\source\repos\NgdPluginZeeConnect\NgdPluginZeeConnect\bin\Debug\NgdPluginZeeConnect.dll
+1>  C:\Users\TENSOR\source\repos\NgdPluginZeeConnect\NgdPluginZeeConnect\bin\Debug\NgdPluginZeeConnect.pdb
+1>  12 File(s) copied
+========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========
