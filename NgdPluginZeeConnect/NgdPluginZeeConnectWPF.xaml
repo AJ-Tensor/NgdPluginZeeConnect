@@ -31,9 +31,9 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <UIControls:WpfSaveLoad x:Name="SaveLoad" HelpKeyword="NgdTeklaTools\NgdPluginZeeConnect" />
         <UIControls:WpfOkApplyModifyGetOnOffCancel
@@ -45,64 +45,67 @@
             OnOffClicked="WpfOkApplyModifyGetOnOffCancel_OnOffClicked"
             CancelClicked="WpfOkApplyModifyGetOnOffCancel_CancelClicked"/>
         <TabControl Grid.Row="1">
-            <TabItem Header="General">
+            <TabItem Header="ClipSide">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="4*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" />
                         <RowDefinition Height="40" />
                         <RowDefinition Height="40" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="40" />
                         <RowDefinition Height="40" />
                         <RowDefinition Height="40" />
                     </Grid.RowDefinitions>
 
-                    <Label Content="Display Text" VerticalAlignment="Center" />
+                    <Label Content="Plate Thickness" VerticalAlignment="Center" />
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <UIControls:WpfFilterCheckBox VerticalAlignment="Center" AttributeName="DisplayText"/>
-                        <TextBox TextWrapping="Wrap" 
+                        <!--<UIControls:WpfFilterCheckBox VerticalAlignment="Center" AttributeName="DisplayText"/>-->
+                        <!--<TextBox TextWrapping="Wrap" 
                                  Width="120" 
                                  Height="23" 
                                  VerticalAlignment="Center"
                                  Text="{Binding DisplayText, Mode=TwoWay}"
-                                 fui:Extensions.Watermark="{Binding DisplayTextWatermark}"/>
+                                 fui:Extensions.Watermark="{Binding DisplayTextWatermark}"/>-->
+                        <TextBox Width="120" Height="20" x:Name="Thickness" Text="{Binding Thickness, Mode=TwoWay}"/>
                     </StackPanel>
 
-                    <Label Content="Profile" Grid.Row="1" VerticalAlignment="Center"/>
+                    <Label Content="Weld size" Grid.Row="1" VerticalAlignment="Center"/>
                     <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
-                        <UIControls:WpfFilterCheckBox VerticalAlignment="Center" AttributeName="MyProfile" />
-                        <TextBox TextWrapping="Wrap" 
-                                 Width="120" 
-                                 Height="23" 
-                                 VerticalAlignment="Center" 
-                                 Text="{Binding MyProfile, Mode=TwoWay}"
-								 fui:Extensions.Watermark="Select Profile"/>
-                        <UIControls:WpfProfileCatalog Name="MyProfileCatalog" 
+                        <!--<UIControls:WpfFilterCheckBox VerticalAlignment="Center" AttributeName="MyProfile" />-->
+                        <TextBox Width="120" Height="20" x:Name="WeldSize" Text="{Binding Weldsize, Mode=TwoWay}"/>
+                        <!--<UIControls:WpfProfileCatalog Name="MyProfileCatalog" 
 							                          VerticalAlignment="Center"
 							                          SelectClicked="MyProfileCatalog_SelectClicked"
-							                          SelectionDone="MyProfileCatalog_SelectionDone"/>
+							                          SelectionDone="MyProfileCatalog_SelectionDone"/>-->
                     </StackPanel>
 
-                    <Label Content="Shape" Grid.Row="2" VerticalAlignment="Center"/>
+                    <Label Content="No. of Bolts" Grid.Row="2" VerticalAlignment="Center"/>
                     <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
-                        <UIControls:WpfFilterCheckBox VerticalAlignment="Center" AttributeName="MyShape" />
-                        <TextBox TextWrapping="Wrap" 
-                                 Width="120" 
-                                 Height="23" 
-                                 VerticalAlignment="Center" 
-                                 Text="{Binding MyShape, Mode=TwoWay}"
-								 fui:Extensions.Watermark="Select Shape"/>
-                        <UIControls:WpfShapeCatalog VerticalAlignment="Center"
+                        <!--<UIControls:WpfFilterCheckBox VerticalAlignment="Center" AttributeName="MyShape" />-->
+                        <TextBox Width="120" Height="20" x:Name="NoOfBolt" Text="{Binding Boltactivation, Mode=TwoWay}"/>
+                        <!--<UIControls:WpfShapeCatalog VerticalAlignment="Center"
                                                     Name="MyShapeCatalog"
                                                     SelectClicked="MyShapeCatalog_SelectClicked"
-                                                    SelectionDone="MyShapeCatalog_SelectionDone"/>
+                                                    SelectionDone="MyShapeCatalog_SelectionDone"/>-->
                     </StackPanel>
 
-                    <Label Content="Component" Grid.Row="3" VerticalAlignment="Center"/>
-                    <Grid Grid.Column="1" Grid.Row="3">
+                    <Label Content="Bolt Standard" Grid.Row="3" VerticalAlignment="Center"/>
+                    <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal">
+                        <!--<UIControls:WpfFilterCheckBox VerticalAlignment="Center" AttributeName="MyShape" />-->
+                        <!--<TextBox Width="120" Height="20" x:Name="NocOfBolt" Text="{Binding Boltactivation, Mode=TwoWay}"/>-->
+                        <UIControls:WpfBoltCatalogStandard SelectedIndex="0" Width="120" Height="20"
+                                x:Name="BoltStandardCatalog1"
+                                SelectedValue="{Binding BoltStandard, Mode=TwoWay}" 
+                                SelectionChanged="BoltStandardCatalog1_SelectionChanged"/>
+                        <!--<UIControls:WpfShapeCatalog VerticalAlignment="Center"
+                                                    Name="MyShapeCatalog"
+                                                    SelectClicked="MyShapeCatalog_SelectClicked"
+                                                    SelectionDone="MyShapeCatalog_SelectionDone"/>-->
+                    </StackPanel>
+                    <!--<Grid Grid.Column="1" Grid.Row="3">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30"/>
                             <RowDefinition Height="30"/>
@@ -135,114 +138,94 @@
                                                         Name="ComponentCatalog"
                                                         SelectClicked="ComponentCatalog_SelectClicked"
                                                         SelectionDone="ComponentCatalog_SelectionDone"/>
-                    </Grid>
-					
-                    <Label Content="Enum via Description" Grid.Row="4" VerticalAlignment="Center"/>
+                    </Grid>-->
+
+                    <Label Content="Bolt size" Grid.Row="4" VerticalAlignment="Center"/>
                     <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal" >
-                        <UIControls:WpfFilterCheckBox VerticalAlignment="Top" AttributeName="MyExampleEnum1" Margin="0,10,0,0" IsTabStop="False" />
-                        <ComboBox Margin="2,0,0,0" 
-                                  ItemsSource="{Binding Source={ngdDialog:EnumBindingSource {x:Type local:ExampleEnum}}}"
-                                  SelectedItem="{Binding MyExampleEnum1, Mode=TwoWay}">
-                        </ComboBox>
+                        <!--<UIControls:WpfFilterCheckBox VerticalAlignment="Top" AttributeName="MyExampleEnum1" Margin="0,10,0,0" IsTabStop="False" />-->
+                        <UIControls:WpfBoltCatalogSize SelectedIndex="0" Width="120" Height="20"
+                    
+                                x:Name="BoltSize1" 
+                                SelectedItem="{Binding BoltDiameter, Mode=TwoWay}" 
+                                ItemsSource="{Binding ElementName=BoltStandardCatalog1, Path=BoltSizes}" />
                     </StackPanel>
-					
-                    <Label Content="Enum via Image" Grid.Row="5" VerticalAlignment="Center"/>
-                    <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal" >
-                        <UIControls:WpfFilterCheckBox VerticalAlignment="Top" AttributeName="MyExampleEnum2" Margin="0,10,0,0" IsTabStop="False" />
-                        <ComboBox 
-                            Margin="2,0,0,0" 
-                            ItemsSource="{Binding Source={ngdDialog:EnumBindingSource {x:Type local:ExampleEnum}}}"
-                            SelectedItem="{Binding MyExampleEnum2, Mode=TwoWay}">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Image Source="{Binding Converter={StaticResource ImageConverter}}"/>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                    </StackPanel>
+                    <Canvas Grid.Column="1" Grid.Row="5" >
+                        <Image x:Name="Plate_side" Source="Plate side Attribute.png" Height="182" Canvas.Left="119" Width="327" Canvas.Top="-162"  />
+                        <!--<UIControls:WpfFilterCheckBox VerticalAlignment="Top" AttributeName="MyExampleEnum1" Margin="0,10,0,0" IsTabStop="False" />-->
+                    </Canvas>
+
+
+
                 </Grid>
             </TabItem>
-            <TabItem Header="Connection">
+            <TabItem Header="Extension Side">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="19" />
-                        <ColumnDefinition Width="63"/>
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="*" />
+                        <!--<ColumnDefinition Width=""/>-->
+                        <ColumnDefinition Width="4*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="38" />
-                        <RowDefinition Height="38" />
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
 
-                    <Label Content="Bolt Standard" Grid.Row="0" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="0,8,0,7"/>
+                    <Label Content="Extension" Grid.Row="0" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="0,8,0,7"/>
                     <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal">
-                        <UIControls:WpfFilterCheckBox VerticalAlignment="Center" AttributeName="BoltStandard"/>
+                        <TextBox Width="120" Height="20" x:Name="Extension_Value" Text="{Binding Extension, Mode=TwoWay}"/>
+                        <!--<UIControls:WpfFilterCheckBox VerticalAlignment="Center" AttributeName="BoltStandard"/>
                         <UIControls:WpfBoltCatalogStandard Width="160"
                                                            Height="23"
                                                            Name="BoltCatalogStandard"
-                                                           SelectedItem="{Binding BoltStandard, Mode=TwoWay}"/>
+                                                           SelectedItem="{Binding BoltStandard, Mode=TwoWay}"/>-->
                     </StackPanel>
 
-                    <Label Content="Bolt Size" Grid.Row="1" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="0,7,0,8"/>
+                    <Label Content="End Margin" Grid.Row="1" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="0,7,0,8"/>
                     <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
-                        <UIControls:WpfFilterCheckBox VerticalAlignment="Center" AttributeName="BoltDiameter"/>
+                        <TextBox Width="120" Height="20" x:Name="marginEndBolt" Text="{Binding Margin, Mode=TwoWay}"/>
+                        <!--<UIControls:WpfFilterCheckBox VerticalAlignment="Center" AttributeName="BoltDiameter"/>
                         <UIControls:WpfBoltCatalogSize Width="160"
                                                        Height="23"
                                                        ItemsSource="{Binding ElementName=BoltCatalogStandard, Path=BoltSizes}"
-                                                       SelectedItem="{Binding BoltDiameter, Mode=TwoWay}"/>
+                                                       SelectedItem="{Binding BoltDiameter, Mode=TwoWay}"/>-->
                     </StackPanel>
+                    <Label Content="End Margin" Grid.Row="2" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="0,7,0,8"/>
+                    <StackPanel Grid.Column="2" Grid.Row="2" Orientation="Horizontal">
+                        <UIControls:WpfBoltCatalogStandard SelectedIndex="0" Width="120" Height="20"
+                                x:Name="BoltStandardCatalog2"
+                                Margin="2 0 0 0" 
+                                SelectedValue="{Binding EBoltstandard, Mode=TwoWay}"
+                                SelectionChanged="BoltStandardCatalog2_SelectionChanged"/>
+                        <!--<UIControls:WpfFilterCheckBox VerticalAlignment="Center" AttributeName="BoltDiameter"/>
+                        <UIControls:WpfBoltCatalogSize Width="160"
+                                                       Height="23"
+                                                       ItemsSource="{Binding ElementName=BoltCatalogStandard, Path=BoltSizes}"
+                                                       SelectedItem="{Binding BoltDiameter, Mode=TwoWay}"/>-->
+                    </StackPanel>
+                    <Label Content="End Margin" Grid.Row="3" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="0,7,0,8"/>
+                    <StackPanel Grid.Column="2" Grid.Row="3" Orientation="Horizontal">
+                        <UIControls:WpfBoltCatalogSize SelectedIndex="0" Width="120" Height="20"
+                    
+                                x:Name="BoltSize2" 
+                                SelectedItem="{Binding EBoltsize, Mode=TwoWay}" 
+                                ItemsSource="{Binding ElementName=BoltStandardCatalog2, Path=BoltSizes}" />
+                        <!--<UIControls:WpfFilterCheckBox VerticalAlignment="Center" AttributeName="BoltDiameter"/>
+                        <UIControls:WpfBoltCatalogSize Width="160"
+                                                       Height="23"
+                                                       ItemsSource="{Binding ElementName=BoltCatalogStandard, Path=BoltSizes}"
+                                                       SelectedItem="{Binding BoltDiameter, Mode=TwoWay}"/>-->
+                    </StackPanel>
+                    <Canvas>
+                        <Image Source="Extension side Attribute.png" Canvas.Left="254" Canvas.Top="62" Height="153" Width="264">
 
-                    <Canvas Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,5,0,0">
-
-                        <Image Source="pack://application:,,,/NgdPluginZeeConnect;component/Resources/images/ExampleImage.bmp" Stretch="None"/>
-
-                        <StackPanel Orientation="Horizontal" 
-                                    Canvas.Left="120" 
-                                    Canvas.Top="-4">
-                            <UIControls:WpfFilterCheckBox VerticalAlignment="Center" AttributeName="BoltGage" />
-                            <TextBox TextWrapping="Wrap" 
-                                     Width="120" 
-                                     Height="23" 
-                                     VerticalAlignment="Center" 
-                                     Text="{Binding BoltGage, Mode=TwoWay}"
-									 fui:Extensions.Watermark="{Binding BoltGageWatermark}"/>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal" 
-                                    Canvas.Left="140" 
-                                    Canvas.Top="41">
-                            <UIControls:WpfFilterCheckBox VerticalAlignment="Center" AttributeName="BoltOffset" />
-                            <TextBox TextWrapping="Wrap" 
-                                     Width="80" 
-                                     Height="23" 
-                                     VerticalAlignment="Center" 
-                                     Text="{Binding BoltOffset, Mode=TwoWay}"
-									 fui:Extensions.Watermark="Calculated"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" 
-                                    Canvas.Left="140"
-                                    Canvas.Top ="77" >
-                            <UIControls:WpfFilterCheckBox VerticalAlignment="Center" AttributeName="BoltRows" />
-                            <TextBox TextWrapping="Wrap" 
-                                     Width="40" 
-                                     Height="23" 
-                                     VerticalAlignment="Center" 
-                                     Text="{Binding BoltRows, Mode=TwoWay}"
-									 fui:Extensions.Watermark="None"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" 
-                                    Canvas.Left="140"
-                                    Canvas.Top="101">
-                            <UIControls:WpfFilterCheckBox VerticalAlignment="Center" AttributeName="BoltSpacing" />
-                            <TextBox TextWrapping="Wrap" 
-                                     Width="120" 
-                                     Height="23" 
-                                     VerticalAlignment="Center" 
-                                     Text="{Binding BoltSpacing, Mode=TwoWay}"
-									 fui:Extensions.Watermark="Calculated"/>
-                        </StackPanel>
+                        </Image>
                     </Canvas>
+
+
+
                 </Grid>
             </TabItem>
         </TabControl>

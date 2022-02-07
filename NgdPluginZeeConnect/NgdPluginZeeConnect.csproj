@@ -151,6 +151,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <Resource Include="Plate side Attribute.png" />
+    <Resource Include="Extension side Attribute.png" />
     <Content Include="tsep\bitmaps\et_element_NgdPluginZeeConnect.bmp" />
     <Content Include="tsep\bitmaps\NgdPluginZeeConnect.png" />
     <Content Include="tsep\My_ComponentCatalog.ac.xml" />

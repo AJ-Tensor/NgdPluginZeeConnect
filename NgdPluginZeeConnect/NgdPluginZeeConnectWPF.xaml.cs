@@ -77,36 +77,46 @@ namespace NgdPluginZeeConnect
             HelpViewer.DisplayHelpTopic(SaveLoad.HelpKeyword);
         }
 
-        private void MyProfileCatalog_SelectClicked(object sender, EventArgs e)
+        //private void MyProfileCatalog_SelectClicked(object sender, EventArgs e)
+        //{
+        //    MyProfileCatalog.SelectedProfile = DataModel.MyProfile;
+        //}
+
+        //private void MyProfileCatalog_SelectionDone(object sender, EventArgs e)
+        //{
+        //    DataModel.MyProfile = MyProfileCatalog.SelectedProfile;
+        //}
+
+        //private void MyShapeCatalog_SelectClicked(object sender, EventArgs e)
+        //{
+        //    MyShapeCatalog.SelectedShape = DataModel.MyShape;
+        //}
+
+        //private void MyShapeCatalog_SelectionDone(object sender, EventArgs e)
+        //{
+        //    DataModel.MyShape = MyShapeCatalog.SelectedShape;
+        //}
+
+        //private void ComponentCatalog_SelectClicked(object sender, EventArgs e)
+        //{
+        //    ComponentCatalog.SelectedNumber = DataModel.ComponentNumber;
+        //    ComponentCatalog.SelectedName = DataModel.ComponentName;
+        //}
+
+        //private void ComponentCatalog_SelectionDone(object sender, EventArgs e)
+        //{
+        //    DataModel.ComponentNumber = ComponentCatalog.SelectedNumber;
+        //    DataModel.ComponentName = ComponentCatalog.SelectedName;
+        //}
+
+        private void BoltStandardCatalog1_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            MyProfileCatalog.SelectedProfile = DataModel.MyProfile;
+
         }
 
-        private void MyProfileCatalog_SelectionDone(object sender, EventArgs e)
+        private void BoltStandardCatalog2_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            DataModel.MyProfile = MyProfileCatalog.SelectedProfile;
-        }
 
-        private void MyShapeCatalog_SelectClicked(object sender, EventArgs e)
-        {
-            MyShapeCatalog.SelectedShape = DataModel.MyShape;
-        }
-
-        private void MyShapeCatalog_SelectionDone(object sender, EventArgs e)
-        {
-            DataModel.MyShape = MyShapeCatalog.SelectedShape;
-        }
-
-        private void ComponentCatalog_SelectClicked(object sender, EventArgs e)
-        {
-            ComponentCatalog.SelectedNumber = DataModel.ComponentNumber;
-            ComponentCatalog.SelectedName = DataModel.ComponentName;
-        }
-
-        private void ComponentCatalog_SelectionDone(object sender, EventArgs e)
-        {
-            DataModel.ComponentNumber = ComponentCatalog.SelectedNumber;
-            DataModel.ComponentName = ComponentCatalog.SelectedName;
         }
     }
 }
