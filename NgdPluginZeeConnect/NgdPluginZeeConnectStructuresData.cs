@@ -22,43 +22,62 @@ namespace NgdPluginZeeConnect
 
     public class NgdPluginZeeConnectStructuresData
     {
-        [StructuresField(nameof(DisplayText))]
-        public string DisplayText;
-
+        [StructuresField(nameof(Thickness))]
+        public string Thickness;
+        [StructuresField(nameof(Weldsize))]
+        public string Weldsize;
+        [StructuresField(nameof(Boltactivation))]
+        public string Boltactivation;
         [StructuresField(nameof(BoltStandard))]
         public string BoltStandard;
-
         [StructuresField(nameof(BoltDiameter))]
-        public double BoltDiameter;
+        public string BoltDiameter;
+        [StructuresField(nameof(Extension))]
+        public string Extension;
+        [StructuresField(nameof(Margin))]
+        public string Margin;
+        [StructuresField(nameof(EBoltstandard))]
+        public string EBoltstandard;
+        [StructuresField(nameof(EBoltsize))]
+        public string EBoltsize;
 
-        [StructuresField(nameof(BoltOffset))]
-        public double BoltOffset;
+        //[StructuresField(nameof(DisplayText))]
+        //public string DisplayText;
 
-        [StructuresField(nameof(BoltRows))]
-        public int BoltRows;
+        //[StructuresField(nameof(BoltStandard))]
+        //public string BoltStandard;
 
-        [StructuresField(nameof(BoltSpacing))]
-        public string BoltSpacing;
+        //[StructuresField(nameof(BoltDiameter))]
+        //public double BoltDiameter;
 
-        [StructuresField(nameof(BoltGage))]
-        public string BoltGage;
+        //[StructuresField(nameof(BoltOffset))]
+        //public double BoltOffset;
 
-        [StructuresField(nameof(MyProfile))]
-        public string MyProfile;
+        //[StructuresField(nameof(BoltRows))]
+        //public int BoltRows;
 
-        [StructuresField(nameof(MyShape))]
-        public string MyShape;
+        //[StructuresField(nameof(BoltSpacing))]
+        //public string BoltSpacing;
 
-        [StructuresField(nameof(ComponentNumber))]
-        public int ComponentNumber;
+        //[StructuresField(nameof(BoltGage))]
+        //public string BoltGage;
 
-        [StructuresField(nameof(ComponentName))]
-        public string ComponentName;
+        //[StructuresField(nameof(MyProfile))]
+        //public string MyProfile;
 
-        [StructuresField(nameof(MyExampleEnum1))]
-        public int MyExampleEnum1;
+        //[StructuresField(nameof(MyShape))]
+        //public string MyShape;
 
-        [StructuresField(nameof(MyExampleEnum2))]
-        public int MyExampleEnum2;
+        //[StructuresField(nameof(ComponentNumber))]
+        //public int ComponentNumber;
+
+        //[StructuresField(nameof(ComponentName))]
+        //public string ComponentName;
+
+        //[StructuresField(nameof(MyExampleEnum1))]
+        //public int MyExampleEnum1;
+
+        //[StructuresField(nameof(MyExampleEnum2))]
+        //public int MyExampleEnum2;
     }
 }

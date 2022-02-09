@@ -26,144 +26,217 @@ namespace NgdPluginZeeConnect
         // This is only needed if there are Enum filled combo boxes
         private TypeDescriptionProvider EnumIntegerConverterProvider;
         public event PropertyChangedEventHandler PropertyChanged;
-        private TSD.String _displayText;
-        private TSD.String _boltStandard;
-        private TSD.Distance _boltDiameter;
-        private TSD.Distance _boltOffset;
-        private TSD.Integer _boltRows;
-        private TSD.DistanceList _boltSpacing;
-        private TSD.DistanceList _boltGage;
-        private string _boltGageWatermark;
-        private TSD.String _myProfile;
-        private TSD.String _myShape;
-        private TSD.Integer _componentNumber;
-        private TSD.String _componentName;
-        private ExampleEnum _myExampleEnum1;
-        private ExampleEnum _myExampleEnum2;
+
+        private TSD.String thickness;
+        private TSD.String weld_size;        
+        private TSD.String no_of_bolts;
+        private TSD.String bolt_standard;
+        private TSD.String bolt_size;
+        private TSD.String extension;
+        private TSD.String end_margin;
+        private TSD.String ebolt_standard;
+        private TSD.String ebolt_size;
+
+        //private TSD.String _displayText;
+        //private TSD.String _boltStandard;
+        //private TSD.Distance _boltDiameter;
+        //private TSD.Distance _boltOffset;
+        //private TSD.Integer _boltRows;
+        //private TSD.DistanceList _boltSpacing;
+        //private TSD.DistanceList _boltGage;
+        //private string _boltGageWatermark;
+        //private TSD.String _myProfile;
+        //private TSD.String _myShape;
+        //private TSD.Integer _componentNumber;
+        //private TSD.String _componentName;
+        //private ExampleEnum _myExampleEnum1;
+        //private ExampleEnum _myExampleEnum2;
         #endregion
 
-        #region Properties
-        [StructuresDialog(nameof(DisplayText), typeof(TSD.String))]
-        public string DisplayText
+        [StructuresDialog(nameof(Thickness), typeof(TSD.String))]
+        public string Thickness
         {
-            get { return _displayText; }
-            set { _displayText = value; OnPropertyChanged(); }
+            get { return thickness; }
+            set { thickness = value; OnPropertyChanged(); }
         }
-        public string DisplayTextWatermark
+
+        [StructuresDialog(nameof(Weldsize), typeof(TSD.String))]
+        public string Weldsize
         {
-            get { return NgdPluginZeeConnectEngine.DefaultValues.DisplayText; }
+            get { return weld_size; }
+            set { weld_size = value; OnPropertyChanged(); }
+        }
+
+        [StructuresDialog(nameof(Boltactivation), typeof(TSD.String))]
+        public string Boltactivation
+        {
+            get { return no_of_bolts; }
+            set { no_of_bolts = value; OnPropertyChanged(); }
         }
 
         [StructuresDialog(nameof(BoltStandard), typeof(TSD.String))]
         public string BoltStandard
         {
-            get { return _boltStandard; }
-            set { _boltStandard = value; OnPropertyChanged(); }
+            get { return bolt_standard; }
+            set { bolt_standard = value; OnPropertyChanged(); }
+        }
+        [StructuresDialog(nameof(BoltDiameter), typeof(TSD.String))]
+        public string BoltDiameter
+        {
+            get { return bolt_size; }
+            set { bolt_size = value; OnPropertyChanged(); }
+        }
+        [StructuresDialog(nameof(Extension), typeof(TSD.String))]
+        public string Extension
+        {
+            get { return extension; }
+            set { extension = value; OnPropertyChanged(); }
+        }
+        [StructuresDialog(nameof(Margin), typeof(TSD.String))]
+        public string Margin
+        {
+            get { return end_margin; }
+            set { end_margin = value; OnPropertyChanged(); }
         }
 
-        [StructuresDialog(nameof(BoltDiameter), typeof(TSD.Distance))]
-        public TSD.Distance BoltDiameter
+        [StructuresDialog(nameof(EBoltstandard), typeof(TSD.String))]
+        public string EBoltstandard
         {
-            get { return _boltDiameter; }
-            set
-            {
-                _boltDiameter = value;
-                OnPropertyChanged();
-                SetBoltGageWatermark();
-            }
+            get { return ebolt_standard; }
+            set { ebolt_standard = value; OnPropertyChanged(); }
         }
 
-        [StructuresDialog(nameof(BoltOffset), typeof(TSD.Distance))]
-        public TSD.Distance BoltOffset
+        [StructuresDialog(nameof(EBoltsize), typeof(TSD.String))]
+        public string EBoltsize
         {
-            get { return _boltOffset; }
-            set { _boltOffset = value; OnPropertyChanged(); }
+            get { return ebolt_size; }
+            set { ebolt_size = value; OnPropertyChanged(); }
         }
 
-        [StructuresDialog(nameof(BoltRows), typeof(TSD.Integer))]
-        public TSD.Integer BoltRows
-        {
-            get { return _boltRows; }
-            set { _boltRows = value; OnPropertyChanged(); }
-        }
 
-        [StructuresDialog(nameof(BoltSpacing), typeof(TSD.DistanceList))]
-        public TSD.DistanceList BoltSpacing
-        {
-            get { return _boltSpacing; }
-            set { _boltSpacing = value; OnPropertyChanged(); }
-        }
 
-        [StructuresDialog(nameof(BoltGage), typeof(TSD.DistanceList))]
-        public TSD.DistanceList BoltGage
-        {
-            get { return _boltGage; }
-            set { _boltGage = value; OnPropertyChanged(); }
-        }
-        /// <summary>
-        /// An example of having a watermark that is dependent on UI changes and displays in the current units.
-        /// </summary>
-        public string BoltGageWatermark
-        {
-            get { return _boltGageWatermark; }
-            set { _boltGageWatermark = value; OnPropertyChanged(); }
-        }
-        /// <summary>
-        /// Set the bolt gage watermark based on the default bolt gage for the current bolt size.
-        /// </summary>
-        private void SetBoltGageWatermark()
-        {
-            var boltDiameter = this.BoltDiameter;
-            if (boltDiameter.Millimeters == 0)
-                boltDiameter = new TSD.Distance(NgdPluginZeeConnectEngine.DefaultValues.BoltDiameter);
-            // Calcluate the default bolt gage based on the Current Bolt size
-            var boltGageInch = Nci.Helper.NCIConnectionStandards.StandardBoltGage(boltDiameter.ConvertTo(TSD.Distance.UnitType.Inch), false);
-            var distance = new TSD.Distance(boltGageInch, TSD.Distance.UnitType.Inch);
-            this.BoltGageWatermark = distance.ToString();
-        }
+        //#region Properties
+        //[StructuresDialog(nameof(DisplayText), typeof(TSD.String))]
+        //public string DisplayText
+        //{
+        //    get { return _displayText; }
+        //    set { _displayText = value; OnPropertyChanged(); }
+        //}
+        //public string DisplayTextWatermark
+        //{
+        //    get { return NgdPluginZeeConnectEngine.DefaultValues.DisplayText; }
+        //}
 
-        [StructuresDialog(nameof(MyProfile), typeof(TSD.String))]
-        public string MyProfile
-        {
-            get { return _myProfile; }
-            set { _myProfile = value; OnPropertyChanged(); }
-        }
+        ////[StructuresDialog(nameof(BoltStandard), typeof(TSD.String))]
+        ////public string BoltStandard
+        ////{
+        ////    get { return _boltStandard; }
+        ////    set { _boltStandard = value; OnPropertyChanged(); }
+        ////}
 
-        [StructuresDialog(nameof(MyShape), typeof(TSD.String))]
-        public string MyShape
-        {
-            get { return _myShape; }
-            set { _myShape = value; OnPropertyChanged(); }
-        }
+        ////[StructuresDialog(nameof(BoltDiameter), typeof(TSD.Distance))]
+        ////public TSD.Distance BoltDiameter
+        ////{
+        ////    get { return _boltDiameter; }
+        ////    set
+        ////    {
+        ////        _boltDiameter = value;
+        ////        OnPropertyChanged();
+        ////        SetBoltGageWatermark();
+        ////    }
+        ////}
 
-        [StructuresDialog(nameof(ComponentNumber), typeof(TSD.Integer))]
-        public TSD.Integer ComponentNumber
-        {
-            get { return _componentNumber; }
-            set { _componentNumber = value; OnPropertyChanged(); }
-        }
+        //[StructuresDialog(nameof(BoltOffset), typeof(TSD.Distance))]
+        //public TSD.Distance BoltOffset
+        //{
+        //    get { return _boltOffset; }
+        //    set { _boltOffset = value; OnPropertyChanged(); }
+        //}
 
-        [StructuresDialog(nameof(ComponentName), typeof(TSD.String))]
-        public string ComponentName
-        {
-            get { return _componentName; }
-            set { _componentName = value; OnPropertyChanged(); }
-        }
+        //[StructuresDialog(nameof(BoltRows), typeof(TSD.Integer))]
+        //public TSD.Integer BoltRows
+        //{
+        //    get { return _boltRows; }
+        //    set { _boltRows = value; OnPropertyChanged(); }
+        //}
 
-        [StructuresDialog(nameof(MyExampleEnum1), typeof(TSD.Integer))]
-        public ExampleEnum MyExampleEnum1
-        {
-            get { return _myExampleEnum1; }
-            set { _myExampleEnum1 = value; OnPropertyChanged(); }
-        }
+        //[StructuresDialog(nameof(BoltSpacing), typeof(TSD.DistanceList))]
+        //public TSD.DistanceList BoltSpacing
+        //{
+        //    get { return _boltSpacing; }
+        //    set { _boltSpacing = value; OnPropertyChanged(); }
+        //}
 
-        [StructuresDialog(nameof(MyExampleEnum2), typeof(TSD.Integer))]
-        public ExampleEnum MyExampleEnum2
-        {
-            get { return _myExampleEnum2; }
-            set { _myExampleEnum2 = value; OnPropertyChanged(); }
-        }
-        #endregion
+        //[StructuresDialog(nameof(BoltGage), typeof(TSD.DistanceList))]
+        //public TSD.DistanceList BoltGage
+        //{
+        //    get { return _boltGage; }
+        //    set { _boltGage = value; OnPropertyChanged(); }
+        //}
+        ///// <summary>
+        ///// An example of having a watermark that is dependent on UI changes and displays in the current units.
+        ///// </summary>
+        //public string BoltGageWatermark
+        //{
+        //    get { return _boltGageWatermark; }
+        //    set { _boltGageWatermark = value; OnPropertyChanged(); }
+        //}
+        ///// <summary>
+        ///// Set the bolt gage watermark based on the default bolt gage for the current bolt size.
+        ///// </summary>
+        ////private void SetBoltGageWatermark()
+        ////{
+        ////    var boltDiameter = this.BoltDiameter;
+        ////    if (boltDiameter.Millimeters == 0)
+        ////        boltDiameter = new TSD.Distance(NgdPluginZeeConnectEngine.DefaultValues.BoltDiameter);
+        ////    // Calcluate the default bolt gage based on the Current Bolt size
+        ////    var boltGageInch = Nci.Helper.NCIConnectionStandards.StandardBoltGage(boltDiameter.ConvertTo(TSD.Distance.UnitType.Inch), false);
+        ////    var distance = new TSD.Distance(boltGageInch, TSD.Distance.UnitType.Inch);
+        ////    this.BoltGageWatermark = distance.ToString();
+        ////}
+
+        //[StructuresDialog(nameof(MyProfile), typeof(TSD.String))]
+        //public string MyProfile
+        //{
+        //    get { return _myProfile; }
+        //    set { _myProfile = value; OnPropertyChanged(); }
+        //}
+
+        //[StructuresDialog(nameof(MyShape), typeof(TSD.String))]
+        //public string MyShape
+        //{
+        //    get { return _myShape; }
+        //    set { _myShape = value; OnPropertyChanged(); }
+        //}
+
+        //[StructuresDialog(nameof(ComponentNumber), typeof(TSD.Integer))]
+        //public TSD.Integer ComponentNumber
+        //{
+        //    get { return _componentNumber; }
+        //    set { _componentNumber = value; OnPropertyChanged(); }
+        //}
+
+        //[StructuresDialog(nameof(ComponentName), typeof(TSD.String))]
+        //public string ComponentName
+        //{
+        //    get { return _componentName; }
+        //    set { _componentName = value; OnPropertyChanged(); }
+        //}
+
+        //[StructuresDialog(nameof(MyExampleEnum1), typeof(TSD.Integer))]
+        //public ExampleEnum MyExampleEnum1
+        //{
+        //    get { return _myExampleEnum1; }
+        //    set { _myExampleEnum1 = value; OnPropertyChanged(); }
+        //}
+
+        //[StructuresDialog(nameof(MyExampleEnum2), typeof(TSD.Integer))]
+        //public ExampleEnum MyExampleEnum2
+        //{
+        //    get { return _myExampleEnum2; }
+        //    set { _myExampleEnum2 = value; OnPropertyChanged(); }
+        //}
+        //#endregion
 
         #region Methods
         protected void OnPropertyChanged([CallerMemberName] string name = "")
