@@ -52,9 +52,6 @@ namespace NgdPluginZeeConnect
             List<InputDefinition> inputDefinitions = new List<InputDefinition>();
             try
             {
-                
-
-
                 Picker picker = new Picker();
                 ModelObject _column = picker.PickObject(Picker.PickObjectEnum.PICK_ONE_OBJECT, "Pick Column/Rafter");
                 ModelObjectEnumerator setOfpurlin = picker.PickObjects(Picker.PickObjectsEnum.PICK_N_PARTS, "Pick one or two Girt/Purlin, Press middle mouse button to confirm");
