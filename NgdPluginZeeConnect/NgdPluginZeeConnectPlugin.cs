@@ -48,7 +48,6 @@ namespace NgdPluginZeeConnect
         #region Overrides
         public override List<InputDefinition> DefineInput()
         {
-            //List<InputDefinition> input = null;
             List<InputDefinition> inputDefinitions = new List<InputDefinition>();
             try
             {
@@ -70,15 +69,6 @@ namespace NgdPluginZeeConnect
                     InputDefinition Input = new InputDefinition(item.Identifier);
                     inputDefinitions.Add(Input);
                 }
-
-               
-                //var picker = new Tekla.Structures.Model.UI.Picker();
-                //var part1 = picker.PickObject(Tekla.Structures.Model.UI.Picker.PickObjectEnum.PICK_ONE_PART, "Pick a part.") as Part;
-                //var insertPoint = picker.PickPoint("Pick an insert point.");
-
-                //input = new List<InputDefinition>();
-                //input.Add(new InputDefinition(part1.Identifier));
-                //input.Add(new InputDefinition(insertPoint));
             }
             catch (NciTeklaException e)
             {
@@ -96,7 +86,7 @@ namespace NgdPluginZeeConnect
 
         public override bool Run(List<InputDefinition> input)
         {
-            bool result = false;
+           
             DateTime startTime = DateTime.Now;
             try
             {
@@ -108,26 +98,8 @@ namespace NgdPluginZeeConnect
                     purlins.Add((Beam)Model.SelectModelObject((Identifier)input[i].GetInput()));
                 }
 
-                //// This is an appropriate time to allow the message file to be renamed if required.
-                //NciMessage.RenameReportFileWhenRequired();
-
-                //if (input.Count < 3)
-                //    throw new NciTeklaException($"There must be three inputs but only {input.Count} were provided.");
-
-                //var primaryInput = input[0];
-                //if (primaryInput.GetInputType() != InputDefinition.InputTypeEnum.INPUT_ONE_OBJECT)
-                //    throw new NciTeklaException($"The first input must be a ModelObject but {primaryInput.GetInputType()} was provided.");
-
-                //var pointInput = input[1];
-                //if (pointInput.GetInputType() != InputDefinition.InputTypeEnum.INPUT_ONE_POINT)
-                //    throw new NciTeklaException($"The third input must be a point but {pointInput.GetInputType()} was provided.");
-
-                //var primaryPart = Model.SelectModelObject(primaryInput.GetInput() as Identifier) as Part;
-                //var insertPoint = pointInput.GetInput() as Point;
-
                 var engine = new NgdPluginZeeConnectEngine(this.Data);
-
-                result = engine.Insert(column, purlins).Count > 0;
+                engine.Insert(column, purlins);
 
                 NciMessage.WriteGeneralNotification("Component Complete", this);
             }
@@ -147,12 +119,8 @@ namespace NgdPluginZeeConnect
                     NciMessage.ShowProcessReport(new NotificationType[] { NotificationType.Error, NotificationType.Warning }, startTime);
             }
 
-            return result;
+            return true;
         }
-        #endregion
-
-        #region Private methods
-
         #endregion
     }
 }

@@ -13,8 +13,6 @@ using Tekla.Structures.Model;
 using TSS = Tekla.Structures.Solid;
 using Tekla.Structures.Geometry3d;
 
-//using Nci.Helper;
-
 using Ngd.Tekla.Geometry3d.Extension;
 
 using System;
@@ -48,20 +46,6 @@ namespace NgdPluginZeeConnect
         public string EBoltsize { get; set; } = DefaultValues.EBoltsize;
         public string EBoltstandard { get; set; } = DefaultValues.EBoltstandard;
 
-
-        //public string DisplayText { get; set; } = DefaultValues.DisplayText;
-        //public string BoltStandard { get; set; } = DefaultValues.BoltStandard;
-        //public double BoltDiameter { get; set; } = DefaultValues.BoltDiameter;
-        //public double BoltOffset { get; set; }
-        //public TSD.DistanceList BoltSpacing { get; set; }
-        //public TSD.DistanceList BoltGage { get; set; }
-        //public string MyProfile { get; set; }
-        //public string MyShape { get; set; }
-        //public int ComponentNumber { get; set; }
-        //public string ComponentName { get; set; }
-        //public ExampleEnum MyExampleEnum1 { get; set; }
-        //public ExampleEnum MyExampleEnum2 { get; set; }
-
         public static NgdPluginZeeConnectDefaultValues DefaultValues
         {
             get
@@ -83,7 +67,6 @@ namespace NgdPluginZeeConnect
         
         public NgdPluginZeeConnectEngine(NgdPluginZeeConnectStructuresData data)
         {
-            
             SetData(data);
         }
 
@@ -107,58 +90,15 @@ namespace NgdPluginZeeConnect
                 EBoltstandard = data.EBoltstandard;
             if (!TeklaHelper.IsDefaultValue(data.EBoltsize))
                 EBoltsize = data.EBoltsize;
-
-            //if (!TeklaHelper.IsDefaultValue(data.DisplayText))
-            //    DisplayText = data.DisplayText;
-
-            //if (!TeklaHelper.IsDefaultValue(data.BoltStandard))
-            //    BoltStandard = data.BoltStandard;
-
-            //if (!TeklaHelper.IsDefaultValue(data.BoltDiameter))
-            //    BoltDiameter = data.BoltDiameter;
-
-            //// TODO: If bolt offset is zero or less then this should be changed to use the default offset based on bolt size 
-            //if (!TeklaHelper.IsDefaultValue(data.BoltOffset))
-            //    BoltOffset = data.BoltOffset;
-
-            //if (!TeklaHelper.IsDefaultValue(data.BoltSpacing))
-            //    BoltSpacing = TSD.DistanceList.Parse(data.BoltSpacing);
-            //if (BoltSpacing.Count < data.BoltRows)
-            //{
-            //    // TODO: If bolt quantity is specified but no spacing, or more bolts specified than spacing then additional
-            //    // bolts should be added to match the quantity using the default spacing per bolt size
-            //    ;
-            //}
-
-            //if (!TeklaHelper.IsDefaultValue(data.BoltGage))
-            //    BoltGage = TSD.DistanceList.Parse(data.BoltGage);
-
-            //MyProfile = data.MyProfile;
-
-            //MyShape = data.MyShape;
-
-            //ComponentNumber = data.ComponentNumber;
-            //ComponentName = data.ComponentName;
-
-            //if (Enum.IsDefined(typeof(ExampleEnum), data.MyExampleEnum1))
-            //    MyExampleEnum1 = (ExampleEnum)data.MyExampleEnum1;
-            //else
-            //    MyExampleEnum1 = Ngd.Dialog.TypeExtension.GetDefaultValue<ExampleEnum>();
-
-            //if (Enum.IsDefined(typeof(ExampleEnum), data.MyExampleEnum2))
-            //    MyExampleEnum2 = (ExampleEnum)data.MyExampleEnum2;
-            //else
-            //    MyExampleEnum2 = Ngd.Dialog.TypeExtension.GetDefaultValue<ExampleEnum>();
         }
 
         #endregion
 
         #region Insert Methods
 
-        public List<ModelObject> Insert(ModelObject _column, List<Beam> purlins)
+        public void Insert(ModelObject _column, List<Beam> purlins)
         {
-            
-            var addedObjects = new List<ModelObject>();
+            //var addedObjects = new List<ModelObject>();
 
             /* Add logic here for producing the proper connection */
             Part columnWeb;
@@ -190,7 +130,7 @@ namespace NgdPluginZeeConnect
                 throw new NciTeklaException("Select primary part as Column or Rafter");
             }
 
-            return addedObjects;
+            //return addedObjects;
         }
         #endregion
         #region Support Methods

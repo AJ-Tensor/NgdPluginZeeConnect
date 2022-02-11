@@ -16,5 +16,10 @@ namespace NgdPluginZeeConnect
         public string EBoltstandard { get; set; } = "F1852";
         public string EBoltsize { get; set; } = "0\"1/2";
 
+        //public string DisplayText { get; set; } = "Hello World";
+
+        //public string BoltStandard { get; set; } = "A325N";
+
+        //public double BoltDiameter { get; set; } = Distance.Inch2mm(0.5);
     }
 }
