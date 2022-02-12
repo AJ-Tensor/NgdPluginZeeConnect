@@ -36,14 +36,14 @@ namespace NgdPluginZeeConnect
 
         #region Properties
         Model Model = new Model();
-        public string Thickness { get; set; } = DefaultValues.Thickness;
-        public string Weldsize { get; set; } = DefaultValues.Weldsize;
-        public string Boltactivation { get; set; } = DefaultValues.Boltactivation;
+        public double Thickness { get; set; } = DefaultValues.Thickness;
+        public double Weldsize { get; set; } = DefaultValues.Weldsize;
+        public int Boltactivation { get; set; } = DefaultValues.Boltactivation;
         public string BoltStandard { get; set; } = DefaultValues.BoltStandard;
-        public string BoltDiameter { get; set; } = DefaultValues.BoltDiameter;
-        public string Extension { get; set; } = DefaultValues.Extension;
-        public string Margin { get; set; } = DefaultValues.Margin;
-        public string EBoltsize { get; set; } = DefaultValues.EBoltsize;
+        public double BoltDiameter { get; set; } = DefaultValues.BoltDiameter;
+        public double Extension { get; set; } = DefaultValues.Extension;
+        public double Margin { get; set; } = DefaultValues.Margin;
+        public double EBoltsize { get; set; } = DefaultValues.EBoltsize;
         public string EBoltstandard { get; set; } = DefaultValues.EBoltstandard;
 
         public static NgdPluginZeeConnectDefaultValues DefaultValues
@@ -196,12 +196,12 @@ namespace NgdPluginZeeConnect
                 {
                     throw new NciTeklaException("Solution is not physible, Reselect Appropiate Primary and Secondary Part");
                 }
-                FittingExtension(purlins[i], MinDistanceofPurlin, MaxDistanceofPurlin, endBoltsactivaiton, Convert.ToDouble(Extension), Convert.ToDouble(Margin));
+                FittingExtension(purlins[i], MinDistanceofPurlin, MaxDistanceofPurlin, endBoltsactivaiton,NH.Distance.mm2Inch(Extension),NH.Distance.mm2Inch(Margin));
             }
             #endregion
 
             #region Plate
-            double plate_thickness = Convert.ToDouble(Thickness);
+            double plate_thickness =NH.Distance.mm2Inch(Thickness);
             ContourPoint point = new ContourPoint(new Point(0, 0, centredistance), null);
             ContourPoint point1 = new ContourPoint(new Point(MinDistanceofPurlin + NH.Distance.Inch2mm(6.75), 0, centredistance), null);
             ContourPoint point2 = new ContourPoint(new Point(MinDistanceofPurlin + NH.Distance.Inch2mm(6.75), 0, -centredistance), null);
@@ -218,7 +218,7 @@ namespace NgdPluginZeeConnect
             CP.Insert();
             #endregion
 
-            Welds(Finalbeam, CP, Convert.ToDouble(Weldsize));
+            Welds(Finalbeam, CP,NH.Distance.mm2Inch(Weldsize));
 
             #region BoltMain
             BoltArray boltArray1 = new BoltArray();
@@ -230,7 +230,7 @@ namespace NgdPluginZeeConnect
             boltArray1.FirstPosition = new Point(MinDistanceofPurlin + NH.Distance.Inch2mm(6.75), 0, centredistance);
             boltArray1.SecondPosition = new Point(MinDistanceofPurlin, 0, -centredistance);
             //boltArray1.BoltSize = inch2mm(Convert.ToDouble(_Bolt_size));
-            boltArray1.BoltSize = NH.Distance.Inch2mm(Convertstring(BoltDiameter));
+            boltArray1.BoltSize = BoltDiameter;
             boltArray1.Tolerance = NH.Distance.Inch2mm(0.25);
             boltArray1.BoltStandard = BoltStandard;
             boltArray1.BoltType = BoltGroup.BoltTypeEnum.BOLT_TYPE_WORKSHOP;
@@ -240,7 +240,7 @@ namespace NgdPluginZeeConnect
             boltArray1.Position.Depth = Position.DepthEnum.MIDDLE;
             boltArray1.Position.Plane = Position.PlaneEnum.MIDDLE;
             boltArray1.Position.Rotation = Position.RotationEnum.TOP;
-            if (Convert.ToDouble(Boltactivation) == 0)
+            if (Boltactivation == 0)
             {
                 boltArray1.Bolt = false;
             }
@@ -275,7 +275,7 @@ namespace NgdPluginZeeConnect
             boltArray2.FirstPosition = new Point(MinDistanceofPurlin + NH.Distance.Inch2mm(6.75), 0, -centredistance);
             boltArray2.SecondPosition = new Point(MinDistanceofPurlin, 0, centredistance);
             //boltArray2.BoltSize = inch2mm(Convert.ToDouble(_Bolt_size));
-            boltArray2.BoltSize = NH.Distance.Inch2mm(Convertstring(BoltDiameter));
+            boltArray2.BoltSize = BoltDiameter;
 
             boltArray2.Tolerance = NH.Distance.Inch2mm(0.25);
             boltArray2.BoltStandard = BoltStandard;
@@ -286,7 +286,7 @@ namespace NgdPluginZeeConnect
             boltArray2.Position.Depth = Position.DepthEnum.MIDDLE;
             boltArray2.Position.Plane = Position.PlaneEnum.MIDDLE;
             boltArray2.Position.Rotation = Position.RotationEnum.TOP;
-            if (Convert.ToDouble(Boltactivation) == 0 || Convert.ToDouble(Boltactivation) == 2)
+            if (Boltactivation == 0 || Boltactivation == 2)
             {
                 boltArray2.Bolt = false;
             }
@@ -505,7 +505,7 @@ namespace NgdPluginZeeConnect
                     boltArray.FirstPosition = new Point(MinDistanceofPurlin, 0, extensionBolt);
                     boltArray.SecondPosition = new Point(MaxDistanceofPurlin, 0, extensionBolt);
                     //boltArray.BoltSize = inch2mm(Convert.ToDouble(_EBolt_size));
-                    boltArray.BoltSize = NH.Distance.Inch2mm(Convertstring(EBoltsize));
+                    boltArray.BoltSize = EBoltsize;
 
                     boltArray.Tolerance = NH.Distance.Inch2mm(0.25);
                     boltArray.BoltStandard = EBoltstandard;
@@ -553,7 +553,7 @@ namespace NgdPluginZeeConnect
                     boltArray.FirstPosition = new Point(MinDistanceofPurlin, 0, -extensionBolt);
                     boltArray.SecondPosition = new Point(MaxDistanceofPurlin, 0, -extensionBolt);
                     //boltArray.BoltSize = inch2mm(Convert.ToDouble(_EBolt_size));
-                    boltArray.BoltSize = NH.Distance.Inch2mm(Convertstring(EBoltsize));
+                    boltArray.BoltSize = EBoltsize;
                     boltArray.Tolerance = NH.Distance.Inch2mm(0.25);
                     boltArray.BoltStandard = EBoltstandard;
                     boltArray.BoltType = BoltGroup.BoltTypeEnum.BOLT_TYPE_WORKSHOP;

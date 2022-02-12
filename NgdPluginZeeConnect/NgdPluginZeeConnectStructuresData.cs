@@ -23,24 +23,24 @@ namespace NgdPluginZeeConnect
     public class NgdPluginZeeConnectStructuresData
     {
         [StructuresField(nameof(Thickness))]
-        public string Thickness;
+        public double Thickness;
         [StructuresField(nameof(Weldsize))]
-        public string Weldsize;
+        public double Weldsize;
         [StructuresField(nameof(Boltactivation))]
-        public string Boltactivation;
+        public int Boltactivation;
         [StructuresField(nameof(BoltStandard))]
         public string BoltStandard;
         [StructuresField(nameof(BoltDiameter))]
-        public string BoltDiameter;
+        public double BoltDiameter;
 
         [StructuresField(nameof(Extension))]
-        public string Extension;
+        public double Extension;
         [StructuresField(nameof(Margin))]
-        public string Margin;
+        public double Margin;
         [StructuresField(nameof(EBoltstandard))]
         public string EBoltstandard;
         [StructuresField(nameof(EBoltsize))]
-        public string EBoltsize;
+        public double EBoltsize;
 
        
     }

@@ -27,33 +27,34 @@ namespace NgdPluginZeeConnect
         private TypeDescriptionProvider EnumIntegerConverterProvider;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private TSD.String thickness;
-        private TSD.String weld_size;        
-        private TSD.String no_of_bolts;
+
+        private TSD.Distance thickness;
+        private TSD.Distance weld_size;        
+        private TSD.Integer no_of_bolts;
         private TSD.String bolt_standard;
-        private TSD.String bolt_size;
-        private TSD.String extension;
-        private TSD.String end_margin;
+        private TSD.Distance bolt_size;
+        private TSD.Distance extension;
+        private TSD.Distance end_margin;
         private TSD.String ebolt_standard;
-        private TSD.String ebolt_size;
+        private TSD.Distance ebolt_size;
         #endregion
 
-        [StructuresDialog(nameof(Thickness), typeof(TSD.String))]
-        public string Thickness
+        [StructuresDialog(nameof(Thickness), typeof(TSD.Distance))]
+        public TSD.Distance Thickness
         {
             get { return thickness; }
             set { thickness = value; OnPropertyChanged(); }
         }
 
-        [StructuresDialog(nameof(Weldsize), typeof(TSD.String))]
-        public string Weldsize
+        [StructuresDialog(nameof(Weldsize), typeof(TSD.Distance))]
+        public TSD.Distance Weldsize
         {
             get { return weld_size; }
             set { weld_size = value; OnPropertyChanged(); }
         }
 
-        [StructuresDialog(nameof(Boltactivation), typeof(TSD.String))]
-        public string Boltactivation
+        [StructuresDialog(nameof(Boltactivation), typeof(TSD.Integer))]
+        public TSD.Integer Boltactivation
         {
             get { return no_of_bolts; }
             set { no_of_bolts = value; OnPropertyChanged(); }
@@ -65,20 +66,20 @@ namespace NgdPluginZeeConnect
             get { return bolt_standard; }
             set { bolt_standard = value; OnPropertyChanged(); }
         }
-        [StructuresDialog(nameof(BoltDiameter), typeof(TSD.String))]
-        public string BoltDiameter
+        [StructuresDialog(nameof(BoltDiameter), typeof(TSD.Distance))]
+        public TSD.Distance BoltDiameter
         {
             get { return bolt_size; }
             set { bolt_size = value; OnPropertyChanged(); }
         }
-        [StructuresDialog(nameof(Extension), typeof(TSD.String))]
-        public string Extension
+        [StructuresDialog(nameof(Extension), typeof(TSD.Distance))]
+        public TSD.Distance Extension
         {
             get { return extension; }
             set { extension = value; OnPropertyChanged(); }
         }
-        [StructuresDialog(nameof(Margin), typeof(TSD.String))]
-        public string Margin
+        [StructuresDialog(nameof(Margin), typeof(TSD.Distance))]
+        public TSD.Distance Margin
         {
             get { return end_margin; }
             set { end_margin = value; OnPropertyChanged(); }
@@ -91,8 +92,8 @@ namespace NgdPluginZeeConnect
             set { ebolt_standard = value; OnPropertyChanged(); }
         }
 
-        [StructuresDialog(nameof(EBoltsize), typeof(TSD.String))]
-        public string EBoltsize
+        [StructuresDialog(nameof(EBoltsize), typeof(TSD.Distance))]
+        public TSD.Distance EBoltsize
         {
             get { return ebolt_size; }
             set { ebolt_size = value; OnPropertyChanged(); }
