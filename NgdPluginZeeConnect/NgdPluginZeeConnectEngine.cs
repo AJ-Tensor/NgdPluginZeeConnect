@@ -99,14 +99,17 @@ namespace NgdPluginZeeConnect
         public void Insert(ModelObject _column, List<Beam> purlins)
         {
             //var addedObjects = new List<ModelObject>();
-
             /* Add logic here for producing the proper connection */
             Part columnWeb;
             Part columnInnerFlange;
             Part columnOuterFlange;
             Part primaryPart = null;
 
-            if (_column is CustomPart)
+            if (_column is Beam)
+            {
+                primaryPart = _column as Part;                
+            }
+            else
             {
                 var parts = (_column as CustomPart).GetComponentObjects<Part>();
                 columnWeb = parts.Where(x => x.IsWeb()).OrderByDescending(y => y.GetPlateThickness()).FirstOrDefault();
@@ -114,15 +117,9 @@ namespace NgdPluginZeeConnect
                 columnOuterFlange = parts.Where(x => x.IsOutsideFlange()).OrderByDescending(y => y.GetFlangeThickness()).FirstOrDefault();
                 primaryPart = columnOuterFlange;
             }
-            else
-            {
-                primaryPart = _column as Part;
-            }
 
             if (primaryPart.GetAssembly().Name == "COLUMN" || primaryPart.GetAssembly().Name == "RAFTER")
             {
-
-
                 ZeeConnection(primaryPart, purlins);
             }
             else
@@ -136,10 +133,7 @@ namespace NgdPluginZeeConnect
         #region Support Methods
         public void ZeeConnection(ModelObject column, List<Beam> purlins)
         {
-            if (purlins.Count > 2)
-            {
-                throw new NciTeklaException("Select Maximum 2 Secondary Part");
-            }
+            //To check pair of purlin is correct
             if (purlins.Count == 2)
             {
                 if (!ExtendedCreateobb(purlins[0], 2, 1, 1).Intersects(ExtendedCreateobb(purlins[1], 2, 1, 1)))
@@ -158,8 +152,8 @@ namespace NgdPluginZeeConnect
             #region Coordinatesystem
             GraphicsDrawer graphicsDrawer = new GraphicsDrawer();
             Tekla.Structures.Model.UI.Color color = new Tekla.Structures.Model.UI.Color(0, 0, 1);
-            Point OriginLinept1 = Intersection.LineToPlane(MaxLinesinFace(Originface)[0], NT.Model.TeklaSurface.GetPlaneFromFace(PurlinGirtface));
-            Point OriginLinept2 = Intersection.LineToPlane(MaxLinesinFace(Originface)[1], NT.Model.TeklaSurface.GetPlaneFromFace(PurlinGirtface));
+            Point OriginLinept1 = Intersection.LineToPlane(MaxLinesinFace(Originface)[0], TeklaSurface.GetPlaneFromFace(PurlinGirtface));
+            Point OriginLinept2 = Intersection.LineToPlane(MaxLinesinFace(Originface)[1], TeklaSurface.GetPlaneFromFace(PurlinGirtface));
             double centredistance = 0.5 * (Distance.PointToPoint(OriginLinept1, OriginLinept2));
             graphicsDrawer.DrawLineSegment(OriginLinept1, OriginLinept2, color);
 
@@ -192,6 +186,7 @@ namespace NgdPluginZeeConnect
 
             for (int i = 0; i < purlins.Count; i++)
             {
+                // to check possibility of connection.
                 if (!ExtendedCreateobb(purlins[i], 1, 5, 1).Intersects(ExtendedCreateobb(column as Beam, 1, 5, 1)))
                 {
                     throw new NciTeklaException("Solution is not physible, Reselect Appropiate Primary and Secondary Part");
@@ -229,7 +224,6 @@ namespace NgdPluginZeeConnect
             boltArray1.PartToBoltTo = CP;
             boltArray1.FirstPosition = new Point(MinDistanceofPurlin + NH.Distance.Inch2mm(6.75), 0, centredistance);
             boltArray1.SecondPosition = new Point(MinDistanceofPurlin, 0, -centredistance);
-            //boltArray1.BoltSize = inch2mm(Convert.ToDouble(_Bolt_size));
             boltArray1.BoltSize = BoltDiameter;
             boltArray1.Tolerance = NH.Distance.Inch2mm(0.25);
             boltArray1.BoltStandard = BoltStandard;
@@ -251,7 +245,6 @@ namespace NgdPluginZeeConnect
             boltArray1.Washer1 = true;
             boltArray1.Washer2 = true;
             boltArray1.Washer3 = true;
-
             boltArray1.Nut1 = true;
             boltArray1.Nut2 = true;
             boltArray1.Hole1 = true;
@@ -261,7 +254,6 @@ namespace NgdPluginZeeConnect
             boltArray1.Hole5 = true;
             boltArray1.AddBoltDistX(NH.Distance.Inch2mm(5.66));
             double offsetx = 0.5 * (Math.Sqrt(Math.Pow(6.75, 2) + Math.Pow(2 * NH.Distance.mm2Inch(centredistance), 2)) - Math.Sqrt(32));
-
             boltArray1.StartPointOffset.Dx = NH.Distance.Inch2mm(offsetx);
             boltArray1.AddBoltDistY(NH.Distance.Inch2mm(0));
             boltArray1.Insert();
@@ -274,9 +266,7 @@ namespace NgdPluginZeeConnect
             boltArray2.PartToBoltTo = CP;
             boltArray2.FirstPosition = new Point(MinDistanceofPurlin + NH.Distance.Inch2mm(6.75), 0, -centredistance);
             boltArray2.SecondPosition = new Point(MinDistanceofPurlin, 0, centredistance);
-            //boltArray2.BoltSize = inch2mm(Convert.ToDouble(_Bolt_size));
             boltArray2.BoltSize = BoltDiameter;
-
             boltArray2.Tolerance = NH.Distance.Inch2mm(0.25);
             boltArray2.BoltStandard = BoltStandard;
             boltArray2.BoltType = BoltGroup.BoltTypeEnum.BOLT_TYPE_WORKSHOP;
@@ -384,10 +374,10 @@ namespace NgdPluginZeeConnect
             List<double> edgeDistance = new List<double>();
             List<Line> Lines = new List<Line>();
 
-            edgeDistance.Add(Distance.PointToPoint(FaceVertices(Orignface)[0], FaceVertices(Orignface)[1]));
-            edgeDistance.Add(Distance.PointToPoint(FaceVertices(Orignface)[1], FaceVertices(Orignface)[2]));
-            edgeDistance.Add(Distance.PointToPoint(FaceVertices(Orignface)[2], FaceVertices(Orignface)[3]));
-            edgeDistance.Add(Distance.PointToPoint(FaceVertices(Orignface)[3], FaceVertices(Orignface)[0]));
+            edgeDistance.Add(Distance.PointToPoint(TeklaSurface.GetOutsideVertices(Orignface)[0], TeklaSurface.GetOutsideVertices(Orignface)[1]));
+            edgeDistance.Add(Distance.PointToPoint(TeklaSurface.GetOutsideVertices(Orignface)[1], TeklaSurface.GetOutsideVertices(Orignface)[2]));
+            edgeDistance.Add(Distance.PointToPoint(TeklaSurface.GetOutsideVertices(Orignface)[2], TeklaSurface.GetOutsideVertices(Orignface)[3]));
+            edgeDistance.Add(Distance.PointToPoint(TeklaSurface.GetOutsideVertices(Orignface)[3], TeklaSurface.GetOutsideVertices(Orignface)[0]));
 
             for (int i = 0; i < edgeDistance.Count; i++)
             {
@@ -395,19 +385,19 @@ namespace NgdPluginZeeConnect
                 {
                     if (i == 0)
                     {
-                        Lines.Add(new Line(FaceVertices(Orignface)[0], FaceVertices(Orignface)[1]));
+                        Lines.Add(new Line(TeklaSurface.GetOutsideVertices(Orignface)[0], TeklaSurface.GetOutsideVertices(Orignface)[1]));
                     }
                     if (i == 1)
                     {
-                        Lines.Add(new Line(FaceVertices(Orignface)[1], FaceVertices(Orignface)[2]));
+                        Lines.Add(new Line(TeklaSurface.GetOutsideVertices(Orignface)[1], TeklaSurface.GetOutsideVertices(Orignface)[2]));
                     }
                     if (i == 2)
                     {
-                        Lines.Add(new Line(FaceVertices(Orignface)[2], FaceVertices(Orignface)[3]));
+                        Lines.Add(new Line(TeklaSurface.GetOutsideVertices(Orignface)[2], TeklaSurface.GetOutsideVertices(Orignface)[3]));
                     }
                     if (i == 3)
                     {
-                        Lines.Add(new Line(FaceVertices(Orignface)[3], FaceVertices(Orignface)[0]));
+                        Lines.Add(new Line(TeklaSurface.GetOutsideVertices(Orignface)[3], TeklaSurface.GetOutsideVertices(Orignface)[0]));
                     }
                 }
             }
@@ -440,28 +430,6 @@ namespace NgdPluginZeeConnect
             centerPoint.Y = 0.25 * (listvert[0].Y + listvert[1].Y + listvert[2].Y + listvert[3].Y);
             centerPoint.Z = 0.25 * (listvert[0].Z + listvert[1].Z + listvert[2].Z + listvert[3].Z);
             return centerPoint;
-        }
-        public double Convertstring(string s)
-        {
-            int a = s.IndexOf("\"");
-            double Final;
-            try
-            {
-                string s1 = s.Substring(0, a);
-                string s2 = s.Substring(a + 1);
-                int b = s2.IndexOf("/");
-                string s21 = s2.Substring(0, b);
-                string s22 = s2.Substring(b + 1);
-                Final = Convert.ToDouble(s1) + (Convert.ToDouble(s21) / Convert.ToDouble(s22));
-            }
-            catch
-            {
-                string s1 = s.Substring(0, a);
-                Final = Convert.ToDouble(s1);
-            }
-            
-            return Final;
-
         }
         public Fitting FittingExtension(Beam purlin, double MinDistanceofPurlin, double MaxDistanceofPurlin, bool endBoltactivation, double extension, double margin)
         {
@@ -503,10 +471,8 @@ namespace NgdPluginZeeConnect
                     BoltArray boltArray = new BoltArray();
                     boltArray.PartToBeBolted = purlin;
                     boltArray.FirstPosition = new Point(MinDistanceofPurlin, 0, extensionBolt);
-                    boltArray.SecondPosition = new Point(MaxDistanceofPurlin, 0, extensionBolt);
-                    //boltArray.BoltSize = inch2mm(Convert.ToDouble(_EBolt_size));
+                    boltArray.SecondPosition = new Point(MaxDistanceofPurlin, 0, extensionBolt);                    
                     boltArray.BoltSize = EBoltsize;
-
                     boltArray.Tolerance = NH.Distance.Inch2mm(0.25);
                     boltArray.BoltStandard = EBoltstandard;
                     boltArray.BoltType = BoltGroup.BoltTypeEnum.BOLT_TYPE_WORKSHOP;
@@ -551,8 +517,7 @@ namespace NgdPluginZeeConnect
                     BoltArray boltArray = new BoltArray();
                     boltArray.PartToBeBolted = purlin;
                     boltArray.FirstPosition = new Point(MinDistanceofPurlin, 0, -extensionBolt);
-                    boltArray.SecondPosition = new Point(MaxDistanceofPurlin, 0, -extensionBolt);
-                    //boltArray.BoltSize = inch2mm(Convert.ToDouble(_EBolt_size));
+                    boltArray.SecondPosition = new Point(MaxDistanceofPurlin, 0, -extensionBolt);                   
                     boltArray.BoltSize = EBoltsize;
                     boltArray.Tolerance = NH.Distance.Inch2mm(0.25);
                     boltArray.BoltStandard = EBoltstandard;

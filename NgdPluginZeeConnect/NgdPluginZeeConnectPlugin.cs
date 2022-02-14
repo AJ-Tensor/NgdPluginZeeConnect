@@ -53,8 +53,13 @@ namespace NgdPluginZeeConnect
             {
                 Picker picker = new Picker();
                 ModelObject _column = picker.PickObject(Picker.PickObjectEnum.PICK_ONE_OBJECT, "Pick Column/Rafter");
-                ModelObjectEnumerator setOfpurlin = picker.PickObjects(Picker.PickObjectsEnum.PICK_N_PARTS, "Pick one or two Girt/Purlin, Press middle mouse button to confirm");
+                if (_column == null)
+                    throw new NciTeklaException("Invalid Selection of Primary part. Expecting a Part or Custom Part object.");
 
+                ModelObjectEnumerator setOfpurlin = picker.PickObjects(Picker.PickObjectsEnum.PICK_N_PARTS, "Pick one or two Girt/Purlin, Press middle mouse button to confirm");
+                if (setOfpurlin == null)
+                    throw new NciTeklaException("Invalid Selection of Secondary part. Expecting a Part or Custom Part object.");
+                
                 List<Beam> _purlins = new List<Beam>();
                 foreach (var item in setOfpurlin)
                 {
@@ -97,6 +102,14 @@ namespace NgdPluginZeeConnect
                 {
                     purlins.Add((Beam)Model.SelectModelObject((Identifier)input[i].GetInput()));
                 }
+                if (purlins.Count > 2)
+                {
+                    throw new NciTeklaException("Select Maximum 2 Secondary Part");
+                }
+                if (column == null)
+                    throw new NciTeklaException("Invalid primary object.");
+                if (purlins == null)
+                    throw new NciTeklaException("Invalid Secondary object.");
 
                 var engine = new NgdPluginZeeConnectEngine(this.Data);
                 engine.Insert(column, purlins);
