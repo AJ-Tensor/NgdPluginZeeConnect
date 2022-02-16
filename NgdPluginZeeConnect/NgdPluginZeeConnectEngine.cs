@@ -1,30 +1,16 @@
 ﻿using Nci.Tekla.Model;
-using Ngd.Dialog;
-using Ngd.Tekla.Geometry3d;
 using Ngd.Tekla.Model.Extension;
 using NH = Nci.Helper;
-using NT = Nci.Tekla;
-using ND = Ngd.Dialog;
-using NTG = Ngd.Tekla.Geometry3d;
-
-
 using Tekla.Structures.Model.UI;
 using Tekla.Structures.Model;
 using TSS = Tekla.Structures.Solid;
 using Tekla.Structures.Geometry3d;
-
-using Ngd.Tekla.Geometry3d.Extension;
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using TSG = Tekla.Structures.Geometry3d;
 
-using Tekla.Structures.Solid;
-using Tekla.Structures.Plugins;
-using TSD = Tekla.Structures.Datatype;
+
 
 namespace NgdPluginZeeConnect
 {
@@ -96,31 +82,31 @@ namespace NgdPluginZeeConnect
 
         #region Insert Methods
 
-        public void Insert(ModelObject _column, List<Beam> purlins)
+        public void Insert(ModelObject ColumnRafter, List<Beam> PurlinGirt)
         {
-            //var addedObjects = new List<ModelObject>();
-            /* Add logic here for producing the proper connection */
             Part columnWeb;
             Part columnInnerFlange;
             Part columnOuterFlange;
             Part primaryPart = null;
-
-            if (_column is Beam)
+            List<Beam> secondaryPart = PurlinGirt;
+            
+            if (ColumnRafter is Beam)
             {
-                primaryPart = _column as Part;                
+                primaryPart = ColumnRafter as Part;                
             }
             else
             {
-                var parts = (_column as CustomPart).GetComponentObjects<Part>();
+                var parts = (ColumnRafter as CustomPart).GetComponentObjects<Part>();
                 columnWeb = parts.Where(x => x.IsWeb()).OrderByDescending(y => y.GetPlateThickness()).FirstOrDefault();
                 columnInnerFlange = parts.Where(x => x.IsInsideFlange()).OrderByDescending(y => y.GetFlangeThickness()).FirstOrDefault();
-                columnOuterFlange = parts.Where(x => x.IsOutsideFlange()).OrderByDescending(y => y.GetFlangeThickness()).FirstOrDefault();
+                List<Part> outeFlange = parts.Where(x => x.IsOutsideFlange()).ToList<Part>();
+                columnOuterFlange = ClosestPart(outeFlange, CenterLine(secondaryPart[0]).Origin);  
                 primaryPart = columnOuterFlange;
             }
-
+            //Primary part is Column or rafter and Secondary part is List of Girt or Purlins
             if (primaryPart.GetAssembly().Name == "COLUMN" || primaryPart.GetAssembly().Name == "RAFTER")
             {
-                ZeeConnection(primaryPart, purlins);
+                ZeeConnection(primaryPart, secondaryPart);
             }
             else
             {
@@ -131,95 +117,88 @@ namespace NgdPluginZeeConnect
         }
         #endregion
         #region Support Methods
-        public void ZeeConnection(ModelObject column, List<Beam> purlins)
+        public void ZeeConnection(ModelObject ColumnRafter, List<Beam> PurlinGirt)
         {
             //To check pair of purlin is correct
-            if (purlins.Count == 2)
+            if (PurlinGirt.Count == 2)
             {
-                if (!ExtendedCreateobb(purlins[0], 2, 1, 1).Intersects(ExtendedCreateobb(purlins[1], 2, 1, 1)))
+                if (!ExtendedCreateobb(PurlinGirt[0], 2, 1, 1).Intersects(ExtendedCreateobb(PurlinGirt[1], 2, 1, 1)))
                 {
                     throw new NciTeklaException("Select Appropiate Pair of secondary part");
                 }
             }
-            #region Face Detection           
-            Line centerLinePurlin = CenterLine(purlins[0]);
-            Beam Finalbeam = column as Beam;
-            Line centreLineFinalBeam = CenterLine(Finalbeam);
-            TSS.Face Originface = PrimaryFace(column as Part, centerLinePurlin);
-            TSS.Face PurlinGirtface = SecondaryFace(purlins[0] as Beam, centreLineFinalBeam);
+
+            #region Face Detection  
+            //Line passing through secondary part
+            Line centerLineSecondary = CenterLine(PurlinGirt[0]);
+            //Part of Primary part for detection of flange outer face refrence to secondary part
+            Beam FinalBeamPrimary = ColumnRafter as Beam;
+            Line centreLineFinalBeam = CenterLine(FinalBeamPrimary);
+            //Outer flange Face
+            TSS.Face Originface = PrimaryFace(ColumnRafter as Part, centerLineSecondary);
+            //Purlin or girt face on connection to be placed.
+            TSS.Face PurlinGirtface = SecondaryFace(PurlinGirt[0] as Beam, centreLineFinalBeam);
             #endregion
 
-            #region Coordinatesystem
-            GraphicsDrawer graphicsDrawer = new GraphicsDrawer();
-            Tekla.Structures.Model.UI.Color color = new Tekla.Structures.Model.UI.Color(0, 0, 1);
+            #region Local Coordinatesystem and Workplane Setup
+            //Two extreme points on Flange of Primary part
             Point OriginLinept1 = Intersection.LineToPlane(MaxLinesinFace(Originface)[0], TeklaSurface.GetPlaneFromFace(PurlinGirtface));
             Point OriginLinept2 = Intersection.LineToPlane(MaxLinesinFace(Originface)[1], TeklaSurface.GetPlaneFromFace(PurlinGirtface));
+            //half of the Flange Width
             double centredistance = 0.5 * (Distance.PointToPoint(OriginLinept1, OriginLinept2));
-            graphicsDrawer.DrawLineSegment(OriginLinept1, OriginLinept2, color);
+            
 
             CoordinateSystem localCoordinateSystem = new CoordinateSystem();
             localCoordinateSystem.Origin = CentrePoint(OriginLinept1, OriginLinept2);
             localCoordinateSystem.AxisX = Originface.Normal;
             localCoordinateSystem.AxisY = PurlinGirtface.Normal;
-            #endregion
+            
             WorkPlaneHandler myWorkPlaneHandler = Model.GetWorkPlaneHandler();
             TransformationPlane currentPlane = myWorkPlaneHandler.GetCurrentTransformationPlane();
             TransformationPlane localplane = new TransformationPlane(localCoordinateSystem); ;
             myWorkPlaneHandler.SetCurrentTransformationPlane(localplane);
+            #endregion
 
-            #region Offset Calculcation
+            #region Offset Calculcation of secondary part
             List<double> distanceFromOrigin = new List<double>();
             for (int j = 0; j < MaxLinesinFace(PurlinGirtface).Count; j++)
             {
                 distanceFromOrigin.Add(Distance.PointToLine(localCoordinateSystem.Origin, MaxLinesinFace(PurlinGirtface)[j]));
             }
+            //Distance from flange face to secondary part face's Maximum Lines
             double MaxDistanceofPurlin = distanceFromOrigin.Max();
             double MinDistanceofPurlin = distanceFromOrigin.Min();
             #endregion
 
+            //Extension bolt will activate if there is two secondary part
             #region Extension and End bolting
             bool endBoltsactivaiton = false;
-            if (purlins.Count == 2)
+            if (PurlinGirt.Count == 2)
             {
                 endBoltsactivaiton = true;
             }
 
-            for (int i = 0; i < purlins.Count; i++)
+            for (int i = 0; i < PurlinGirt.Count; i++)
             {
-                // to check possibility of connection.
-                if (!ExtendedCreateobb(purlins[i], 1, 5, 1).Intersects(ExtendedCreateobb(column as Beam, 1, 5, 1)))
+                //Check for sondary part pair is aligned or not.
+                if (!ExtendedCreateobb(PurlinGirt[i], 1, 5, 1).Intersects(ExtendedCreateobb(ColumnRafter as Beam, 1, 5, 1)))
                 {
                     throw new NciTeklaException("Solution is not physible, Reselect Appropiate Primary and Secondary Part");
                 }
-                FittingExtension(purlins[i], MinDistanceofPurlin, MaxDistanceofPurlin, endBoltsactivaiton,NH.Distance.mm2Inch(Extension),NH.Distance.mm2Inch(Margin));
+                FittingExtension(PurlinGirt[i], MinDistanceofPurlin, MaxDistanceofPurlin, endBoltsactivaiton, NH.Distance.mm2Inch(Extension), NH.Distance.mm2Inch(Margin));
             }
             #endregion
 
-            #region Plate
-            double plate_thickness =NH.Distance.mm2Inch(Thickness);
-            ContourPoint point = new ContourPoint(new Point(0, 0, centredistance), null);
-            ContourPoint point1 = new ContourPoint(new Point(MinDistanceofPurlin + NH.Distance.Inch2mm(6.75), 0, centredistance), null);
-            ContourPoint point2 = new ContourPoint(new Point(MinDistanceofPurlin + NH.Distance.Inch2mm(6.75), 0, -centredistance), null);
-            ContourPoint point3 = new ContourPoint(new Point(0, 0, -centredistance), null);
-            ContourPlate CP = new ContourPlate();
-            CP.AddContourPoint(point);
-            CP.AddContourPoint(point1);
-            CP.AddContourPoint(point2);
-            CP.AddContourPoint(point3);
-            CP.Profile.ProfileString = "PL" + NH.Distance.Inch2mm(plate_thickness);
-            CP.Material.MaterialString = "A36";
-            CP.Position.Depth = Position.DepthEnum.FRONT;
-            CP.Class = "2";
-            CP.Insert();
+            #region Plate & Welds
+            ContourPlate CP = Plate(centredistance, MinDistanceofPurlin);
+            Welds(FinalBeamPrimary, CP, NH.Distance.mm2Inch(Weldsize));
             #endregion
-
-            Welds(Finalbeam, CP,NH.Distance.mm2Inch(Weldsize));
 
             #region BoltMain
             BoltArray boltArray1 = new BoltArray();
-            for (int i = 0; i < purlins.Count; i++)
+            for (int i = 0; i < PurlinGirt.Count; i++)
             {
-                boltArray1.PartToBeBolted = purlins[i];
+                boltArray1.PartToBeBolted = PurlinGirt[i];
             }
             boltArray1.PartToBoltTo = CP;
             boltArray1.FirstPosition = new Point(MinDistanceofPurlin + NH.Distance.Inch2mm(6.75), 0, centredistance);
@@ -259,9 +238,9 @@ namespace NgdPluginZeeConnect
             boltArray1.Insert();
 
             BoltArray boltArray2 = new BoltArray();
-            for (int i = 0; i < purlins.Count; i++)
+            for (int i = 0; i < PurlinGirt.Count; i++)
             {
-                boltArray2.PartToBeBolted = purlins[i];
+                boltArray2.PartToBeBolted = PurlinGirt[i];
             }
             boltArray2.PartToBoltTo = CP;
             boltArray2.FirstPosition = new Point(MinDistanceofPurlin + NH.Distance.Inch2mm(6.75), 0, -centredistance);
@@ -404,11 +383,6 @@ namespace NgdPluginZeeConnect
 
             return Lines;
         }
-        public List<Point> FaceVertices(TSS.Face face)
-        {
-            List<Point> points = TeklaSurface.GetOutsideVertices(face);
-            return points;
-        }
         public Point FaceCenter(TSS.Face face)
         {
             List<TSS.Loop> loops = new List<TSS.Loop>();
@@ -431,11 +405,11 @@ namespace NgdPluginZeeConnect
             centerPoint.Z = 0.25 * (listvert[0].Z + listvert[1].Z + listvert[2].Z + listvert[3].Z);
             return centerPoint;
         }
-        public Fitting FittingExtension(Beam purlin, double MinDistanceofPurlin, double MaxDistanceofPurlin, bool endBoltactivation, double extension, double margin)
+        public Fitting FittingExtension(Beam PurlinGirt, double MinDistanceofPurlin, double MaxDistanceofPurlin, bool endBoltactivation, double extension, double margin)
         {
 
             bool a = true;
-            ArrayList purlinPoints = purlin.GetCenterLine(a);
+            ArrayList purlinPoints = PurlinGirt.GetCenterLine(a);
             double purlinPt1 = Distance.PointToPoint(purlinPoints[0] as Point, new Point(0, 0, 0));
             double purlinPt2 = Distance.PointToPoint(purlinPoints[1] as Point, new Point(0, 0, 0));
 
@@ -464,12 +438,13 @@ namespace NgdPluginZeeConnect
                 myFitting.Plane.Origin = new Point(0, 0, NH.Distance.Inch2mm(extension));
                 myFitting.Plane.AxisX = new Vector(1, 0, 0);
                 myFitting.Plane.AxisY = new Vector(0, 1, 0);
-                myFitting.Father = purlin;
+                myFitting.Father = PurlinGirt;
                 myFitting.Insert();
                 if (endBoltactivation)
                 {
+                    //Extension Bolt
                     BoltArray boltArray = new BoltArray();
-                    boltArray.PartToBeBolted = purlin;
+                    boltArray.PartToBeBolted = PurlinGirt;
                     boltArray.FirstPosition = new Point(MinDistanceofPurlin, 0, extensionBolt);
                     boltArray.SecondPosition = new Point(MaxDistanceofPurlin, 0, extensionBolt);                    
                     boltArray.BoltSize = EBoltsize;
@@ -510,12 +485,13 @@ namespace NgdPluginZeeConnect
                 myFitting.Plane.Origin = new Point(0, 0, -NH.Distance.Inch2mm(extension));
                 myFitting.Plane.AxisX = new Vector(1, 0, 0);
                 myFitting.Plane.AxisY = new Vector(0, 1, 0);
-                myFitting.Father = purlin;
+                myFitting.Father = PurlinGirt;
                 myFitting.Insert();
                 if (endBoltactivation)
                 {
+                    //Extension Bolt
                     BoltArray boltArray = new BoltArray();
-                    boltArray.PartToBeBolted = purlin;
+                    boltArray.PartToBeBolted = PurlinGirt;
                     boltArray.FirstPosition = new Point(MinDistanceofPurlin, 0, -extensionBolt);
                     boltArray.SecondPosition = new Point(MaxDistanceofPurlin, 0, -extensionBolt);                   
                     boltArray.BoltSize = EBoltsize;
@@ -628,12 +604,6 @@ namespace NgdPluginZeeConnect
                 double extent1 = extensiony * (maxPoint.Y - minPoint.Y) / 2;
                 double extent2 = extensionz * (maxPoint.Z - minPoint.Z) / 2;
 
-                //GraphicsDrawer graphicsDrawer = new GraphicsDrawer();
-                //Tekla.Structures.Model.UI.Color color = new Tekla.Structures.Model.UI.Color(1, 0, 0);
-
-                //graphicsDrawer.DrawLineSegment(coordSys.Origin,minPoint, color);
-                //graphicsDrawer.DrawLineSegment(coordSys.Origin,maxPoint, color);
-
                 workPlaneHandler.SetCurrentTransformationPlane(originalTransformationPlane);
 
 
@@ -641,7 +611,6 @@ namespace NgdPluginZeeConnect
                                 coordSys.AxisX.Cross(coordSys.AxisY), extent0, extent1, extent2);
 
                 Solid solid1 = beam.GetSolid();
-
             }
 
             return obb;
@@ -653,6 +622,44 @@ namespace NgdPluginZeeConnect
             double z = min.Z + ((max.Z - min.Z) / 2);
 
             return new Point(x, y, z);
+        }
+        public Part ClosestPart(List<Part> part,Point point)
+        {
+            List<double> distance = new List<double>();
+            Part finalPart = null;
+            foreach(Part item in part)
+            {
+                distance.Add(ExtendedCreateobb(item as Beam, 1, 1, 1).DistanceTo(point));
+            }
+            for(int i = 0; i < distance.Count; i++)
+            {
+                if (distance[i] == distance.Min())
+                {
+                    finalPart = part[i];
+                }
+            }
+            return finalPart;
+        }
+        public ContourPlate Plate(double centredistance, double MinDistanceofPurlin)
+        {
+            
+            double plate_thickness = NH.Distance.mm2Inch(Thickness);
+            ContourPoint point = new ContourPoint(new Point(0, 0, centredistance), null);
+            ContourPoint point1 = new ContourPoint(new Point(MinDistanceofPurlin + NH.Distance.Inch2mm(6.75), 0, centredistance), null);
+            ContourPoint point2 = new ContourPoint(new Point(MinDistanceofPurlin + NH.Distance.Inch2mm(6.75), 0, -centredistance), null);
+            ContourPoint point3 = new ContourPoint(new Point(0, 0, -centredistance), null);
+            ContourPlate CP = new ContourPlate();
+            CP.AddContourPoint(point);
+            CP.AddContourPoint(point1);
+            CP.AddContourPoint(point2);
+            CP.AddContourPoint(point3);
+            CP.Profile.ProfileString = "PL" + NH.Distance.Inch2mm(plate_thickness);
+            CP.Material.MaterialString = "A36";
+            CP.Position.Depth = Position.DepthEnum.FRONT;
+            CP.Class = "2";
+            CP.Insert();
+            return CP;
+           
         }
         #endregion
     }

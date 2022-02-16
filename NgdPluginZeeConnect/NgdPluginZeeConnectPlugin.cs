@@ -52,24 +52,24 @@ namespace NgdPluginZeeConnect
             try
             {
                 Picker picker = new Picker();
-                ModelObject _column = picker.PickObject(Picker.PickObjectEnum.PICK_ONE_OBJECT, "Pick Column/Rafter");
-                if (_column == null)
+                // Selection of Primary part as Column or Rafter
+                ModelObject _ColumnRafter = picker.PickObject(Picker.PickObjectEnum.PICK_ONE_OBJECT, "Pick Column/Rafter");
+                if (_ColumnRafter == null)
                     throw new NciTeklaException("Invalid Selection of Primary part. Expecting a Part or Custom Part object.");
 
-                ModelObjectEnumerator setOfpurlin = picker.PickObjects(Picker.PickObjectsEnum.PICK_N_PARTS, "Pick one or two Girt/Purlin, Press middle mouse button to confirm");
-                if (setOfpurlin == null)
+                // Selection of Single or Multiple secondary Part as Purlin or Girt
+                ModelObjectEnumerator setofPurlinGirt = picker.PickObjects(Picker.PickObjectsEnum.PICK_N_PARTS, "Pick one or two Girt/Purlin, Press middle mouse button to confirm");
+                if (setofPurlinGirt == null)
                     throw new NciTeklaException("Invalid Selection of Secondary part. Expecting a Part or Custom Part object.");
                 
-                List<Beam> _purlins = new List<Beam>();
-                foreach (var item in setOfpurlin)
+                List<Beam> _PurlinGirt = new List<Beam>();
+                foreach (var item in setofPurlinGirt)
                 {
-                    _purlins.Add(item as Beam);
+                    _PurlinGirt.Add(item as Beam);
                 }
-
-                InputDefinition Input1 = new InputDefinition(_column.Identifier);
+                InputDefinition Input1 = new InputDefinition(_ColumnRafter.Identifier);
                 inputDefinitions.Add(Input1);
-
-                foreach (Beam item in _purlins)
+                foreach (Beam item in _PurlinGirt)
                 {
                     InputDefinition Input = new InputDefinition(item.Identifier);
                     inputDefinitions.Add(Input);
@@ -95,24 +95,35 @@ namespace NgdPluginZeeConnect
             DateTime startTime = DateTime.Now;
             try
             {
-                ModelObject column = (ModelObject)Model.SelectModelObject((Identifier)input[0].GetInput());
-                List<Beam> purlins = new List<Beam>();
+                ModelObject ColumnRafter = (ModelObject)Model.SelectModelObject((Identifier)input[0].GetInput());
+                List<Beam> PurlinGirt = new List<Beam>();
 
                 for (int i = 1; i < input.Count; i++)
                 {
-                    purlins.Add((Beam)Model.SelectModelObject((Identifier)input[i].GetInput()));
+                    PurlinGirt.Add((Beam)Model.SelectModelObject((Identifier)input[i].GetInput()));
                 }
-                if (purlins.Count > 2)
+                // Number of Secondary Part can not More than two.
+                if (PurlinGirt.Count > 2)
                 {
                     throw new NciTeklaException("Select Maximum 2 Secondary Part");
                 }
-                if (column == null)
+                // Secondary Part name shoud be purlin or girt
+                for (int i = 0; i < PurlinGirt.Count; i++)
+                {
+                    if (!(PurlinGirt[i].Name == "PURLIN" || PurlinGirt[i].Name == "GIRT"))
+                    {
+                        throw new NciTeklaException("Secondary part should be purlin or Girt");
+                    }                    
+                }
+
+
+                if (ColumnRafter == null)
                     throw new NciTeklaException("Invalid primary object.");
-                if (purlins == null)
+                if (PurlinGirt == null)
                     throw new NciTeklaException("Invalid Secondary object.");
 
                 var engine = new NgdPluginZeeConnectEngine(this.Data);
-                engine.Insert(column, purlins);
+                engine.Insert(ColumnRafter, PurlinGirt);
 
                 NciMessage.WriteGeneralNotification("Component Complete", this);
             }
